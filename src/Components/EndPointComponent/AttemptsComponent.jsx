@@ -13,7 +13,7 @@ class AttemptsComponent extends Component {
             <ul>
                 {
                     attempts.map(obj => (
-                        <li key={obj.number}>
+                        <li key={obj.number} className="attempt">
                             {obj.name}
                         </li>
                     ))

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { clientsAPI } from '../../mockData';
-import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup, FormControl, Button } from 'react-bootstrap';
 
 class HomeComponent extends Component {
     constructor(props, context) {
@@ -19,23 +19,23 @@ class HomeComponent extends Component {
 
     render() {
         return (
-            <Grid>
+            <Grid fluid={true}>
                 <Row className="show-grid">
-                    <Col md={4} mdPush={4} className="left-panel">
+                    <Col md={3} mdPush={3} className="left-panel">
                         <div>
                             <div className="left-panel-heading">Registered Clients</div>
                             <ul>
                                 {
                                     clientsAPI.all().map(obj => (
                                         <li key={obj.number}>
-                                            <Link to={`/client/${obj.number}`}>{obj.name}</Link>
+                                            <Link to={`/client/${obj.number}`} className="clients">{obj.name}</Link>
                                         </li>
                                     ))
                                 }
                             </ul>
                         </div>
                     </Col>
-                    <Col md={8} mdPull={8} className="right-panel">
+                    <Col md={9} mdPull={9} className="right-panel">
                         <div>
                             <div className="right-panel-heading">Register New Client</div>
                             <form>

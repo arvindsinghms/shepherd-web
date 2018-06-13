@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {executionAPI, attemptsAPI, endPointsAPI} from "../../mockData";
+import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
 import AttemptsComponent from './AttemptsComponent';
 import Tree from 'react-d3-tree';
@@ -190,6 +191,10 @@ class EndPointComponent extends Component {
 
     }
 
+    sortableTreeChange(treeData ){
+        console.log(treeData);
+        this.setState({ treeData });
+    }
 
     componentDidMount() {
         const dimensions = this.treeContainer.getBoundingClientRect();
@@ -203,6 +208,7 @@ class EndPointComponent extends Component {
 
     render() {
         const endPointId = this.props.match.params.endPointId;
+        const clientId = this.props.match.params.clientId;
         const endPoint = endPointsAPI.get(
             parseInt(endPointId, 10)
         );
@@ -210,24 +216,25 @@ class EndPointComponent extends Component {
             return <div>Sorry! but the client was not found</div>
         }
         return (
-            <Grid>
+            <Grid fluid={true}>
                 <Row className="show-grid">
-                    <Col md={4} mdPush={4} className="left-panel">
+                    <Col md={3} mdPush={3} className="left-panel">
                         <div>
-                            <div className="left-panel-heading">{endPoint.name}</div>
+                            <div className="left-panel-heading">{endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}<span>{endPoint.name}</span></div>
                             <div>
                                 {
                                     executionAPI.all().map(obj => (
-                                        <div key={obj.number} onClick={this.renderChart} className="no-hover-effect">
-                                            <div>{obj.name}</div>
-                                            <AttemptsComponent attempts={attemptsAPI.all()}/>
-                                        </div>
+                                        <ul key={obj.number} onClick={this.renderChart} className="executions">
+                                            <li className="execution-name">{obj.name}</li>
+                                            <li className="no-hover-effect attempts"><AttemptsComponent attempts={attemptsAPI.all()}/></li>
+                                        </ul>
                                     ))
                                 }
+
                             </div>
                         </div>
                     </Col>
-                    <Col md={8} mdPull={8} className="right-panel">
+                    <Col md={9} mdPull={9} className="right-panel">
                         <div style={containerStyles} ref={tc => (this.treeContainer = tc)}>
                             <Tree
                                 data={this.state.currentChart}

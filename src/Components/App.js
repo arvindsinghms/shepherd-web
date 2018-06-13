@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
+import {PageHeader} from 'react-bootstrap';
 import ClientComponent from './ClientComponent/ClientComponent';
 import HomeComponent from './HomeComponent/HomeComponent';
 import EndPointComponent from './EndPointComponent/EndPointComponent';
@@ -10,11 +11,19 @@ class App extends Component {
     render() {
         return(
             <main>
-                <Switch>
-                    <Route exact path = '/' component={HomeComponent}/>
-                    <Route path = '/client/:clientId' component={ClientComponent}/>
-                    <Route path = '/endpoint/:endPointId' component={EndPointComponent}/>
-                </Switch>
+                <PageHeader>
+                    <Link to="/"><div className="logo">Shepherd</div></Link>
+                </PageHeader>
+                <div className="wrapper">
+                    <Switch>
+                        <Route exact path = '/' component={HomeComponent}/>
+                        <Route path = '/client/:clientId/:endPointId' component={EndPointComponent}/>
+                        <Route path = '/client/:clientId' component={ClientComponent}/>
+                    </Switch>
+                </div>
+                <footer>
+                    Shepherd &copy; 2018
+                </footer>
             </main>
         )
     }

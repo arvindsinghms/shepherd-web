@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { clientsAPI, endPointsAPI } from '../../mockData';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
+import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Button, ButtonGroup } from 'react-bootstrap';
 import '../App.css';
 
 function FieldGroup({ id, label, help, ...props }) {
@@ -36,26 +36,28 @@ class ClientComponent extends Component {
             return <div>Sorry! but the client was not found</div>
         }
         return (
-            <Grid>
+            <Grid fluid={true}>
                 <Row className="show-grid">
-                    <Col md={4} mdPush={4} className="left-panel">
+                    <Col md={3} mdPush={9} className="left-panel">
                         <div>
-                            <div className="left-panel-heading">{client.name}</div>
+                            <div className="left-panel-heading">{clientId && <Link className="back" to="/">&laquo;</Link>}<span>{client.name}</span></div>
                             <ul>
                                 {
                                     endPointsAPI.all().map(obj => (
                                         <li key={obj.number}>
-                                            <Link className="exe-link" to={`/endpoint/${obj.number}`}>{obj.name}</Link>
-                                            <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall">Data</Button>
-                                            <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall">Visualise Graph</Button>
-                                            <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall">Info</Button>
+                                            <span className="end-point">{obj.name}</span>
+                                            <ButtonGroup>
+                                                <Button className="xsmall-btn" bsStyle="default" bsSize="xsmall">Data</Button>
+                                                <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall">Visualise Graph</Button>
+                                                <Button className="xsmall-btn execute" bsStyle="info" bsSize="small"><Link to={`/client/${clientId}/${obj.number}`}>Executions</Link></Button>
+                                            </ButtonGroup>
                                         </li>
                                     ))
                                 }
                             </ul>
                         </div>
                     </Col>
-                    <Col md={8} mdPull={8} className="right-panel">
+                    <Col md={9} mdPull={9} className="right-panel">
                         <div>
                             <div className="right-panel-heading">Add New End Point</div>
                             <form>
