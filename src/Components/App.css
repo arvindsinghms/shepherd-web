@@ -40,8 +40,10 @@
 .left-panel li {
     list-style-type: none;
     line-height: 50px;
-    padding: 0 10px;
+    padding: 0 30px;
     cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0 -15px 0 -20px;
 }
 
 .left-panel-heading, .right-panel-heading {
@@ -54,16 +56,17 @@
 
 .right-panel-heading {
     margin: 0 -20px 0 -18px;
-    border-left: 5px solid black;
+    border-left: 5px solid rgba(0, 0, 0, 0.1);
 }
 
 .left-panel li:hover {
-    background: antiquewhite;
+    background: rgba(181, 214, 249, 0.5);
 }
 
 .left-panel a {
     color: grey;
     text-decoration: none;
+    margin-right: 70px;
 }
 
 .left-panel ul {
@@ -74,6 +77,17 @@
     margin-top: 15px;
     float: right;
     background: #62aeff;
+}
+
+.exe-link {
+    margin-right: 10px;
+}
+
+.xsmall-btn {
+    font-size: 0.6em;
+    padding: .1rem .3rem;
+    background: #62aeff;
+    margin-right: 5px;
 }
 
 @keyframes App-logo-spin {

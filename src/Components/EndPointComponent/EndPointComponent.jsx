@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {executionAPI, attemptsAPI} from "../../mockData";
+import {executionAPI, attemptsAPI, endPointsAPI} from "../../mockData";
 import { Grid, Row, Col } from 'react-bootstrap';
 import AttemptsComponent from './AttemptsComponent';
 import Tree from 'react-d3-tree';
@@ -202,22 +202,29 @@ class EndPointComponent extends Component {
     }
 
     render() {
+        const endPointId = this.props.match.params.endPointId;
+        const endPoint = endPointsAPI.get(
+            parseInt(endPointId, 10)
+        );
+        if (!endPoint) {
+            return <div>Sorry! but the client was not found</div>
+        }
         return (
             <Grid>
                 <Row className="show-grid">
                     <Col md={4} mdPush={4} className="left-panel">
                         <div>
-                            <div className="left-panel-heading">Registered Clients</div>
-                            <ul>
+                            <div className="left-panel-heading">{endPoint.name}</div>
+                            <div>
                                 {
                                     executionAPI.all().map(obj => (
-                                        <li key={obj.number} onClick={this.renderChart}>
+                                        <div key={obj.number} onClick={this.renderChart} className="no-hover-effect">
                                             <div>{obj.name}</div>
                                             <AttemptsComponent attempts={attemptsAPI.all()}/>
-                                        </li>
+                                        </div>
                                     ))
                                 }
-                            </ul>
+                            </div>
                         </div>
                     </Col>
                     <Col md={8} mdPull={8} className="right-panel">

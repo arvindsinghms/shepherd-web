@@ -45,8 +45,10 @@ class ClientComponent extends Component {
                                 {
                                     endPointsAPI.all().map(obj => (
                                         <li key={obj.number}>
-                                            <span>{obj.name} </span>
-                                            <Link to={`/endpoint/${obj.number}`}>E</Link>
+                                            <Link className="exe-link" to={`/endpoint/${obj.number}`}>{obj.name}</Link>
+                                            <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall">Data</Button>
+                                            <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall">Visualise Graph</Button>
+                                            <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall">Info</Button>
                                         </li>
                                     ))
                                 }
@@ -61,26 +63,22 @@ class ClientComponent extends Component {
                                     controlId="formBasicText"
                                 >
                                     <br />
-                                    <FormControl
+                                    <FieldGroup
+                                        id="formControlsText"
                                         type="text"
-                                        value={this.state.value}
-                                        placeholder="Enter End Point Name"
+                                        label="Enter Endpoint name"
+                                        placeholder="Endpoint name"
                                         onChange={this.handleChange}
+                                        value={this.state.value}
                                     />
-                                    <br />
-                                    <FieldGroup
-                                        id="formControlsFile"
-                                        type="file"
-                                        label="Workflow graph : "
-                                        help="Example block-level help text here."
-                                    />
-                                    <br />
-                                    <FieldGroup
-                                        id="formControlsFile"
-                                        type="file"
-                                        label="Endpoint details :"
-                                        help="Example block-level help text here."
-                                    />
+                                    <FormGroup controlId="formControlsTextarea">
+                                        <ControlLabel>Workflow Graph in XML format</ControlLabel>
+                                        <FormControl componentClass="textarea" placeholder="textarea" />
+                                    </FormGroup>
+                                    <FormGroup controlId="formControlsTextarea">
+                                        <ControlLabel>Endpoint Details in JSON format</ControlLabel>
+                                        <FormControl componentClass="textarea" placeholder="textarea" />
+                                    </FormGroup>
                                     <Button bsStyle="primary" className="add-client">
                                         Add Endpoint
                                     </Button>
