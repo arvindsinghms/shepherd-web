@@ -27,8 +27,8 @@ class HomeComponent extends Component {
                             <ul>
                                 {
                                     clientsAPI.all().map(obj => (
-                                        <li key={obj.number}>
-                                            <Link to={`/client/${obj.number}`} className="clients">{obj.name}</Link>
+                                        <li key={obj.client_id}>
+                                            <Link to={`/client/${obj.client_id}`} className="clients">{obj.client_name}</Link>
                                         </li>
                                     ))
                                 }

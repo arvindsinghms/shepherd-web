@@ -1,73 +1,72 @@
-{
-  "1": [
-    {
-      "endpoint_id": "11",
-      "client_id": "1",
-      "workflow_graph": "1",
-      "endpoints_details": "dummy",
-      "created_at": "today",
-      "updated_at": "today",
-      "created_by": "hitesh"
-    },
-    {
-      "endpoint_id": "12",
-      "client_id": "12345",
-      "workflow_graph": "1",
-      "endpoints_details": "dummy",
-      "created_at": "today",
-      "updated_at": "today",
-      "created_by": "hitesh"
-    }
-  ],
-  "2": [
-    {
-      "endpoint_id": "21",
-      "client_id": "2",
-      "workflow_graph": "1",
-      "endpoints_details": "dummy",
-      "created_at": "today",
-      "updated_at": "today",
-      "created_by": "hitesh"
-    },
-    {
-      "endpoint_id": "22",
-      "client_id": "2",
-      "workflow_graph": "1",
-      "endpoints_details": "dummy",
-      "created_at": "today",
-      "updated_at": "today",
-      "created_by": "hitesh"
-    }
-  ],
-  "3": [
-    {
-      "endpoint_id": "31",
-      "client_id": "3",
-      "workflow_graph": "1",
-      "endpoints_details": "dummy",
-      "created_at": "today",
-      "updated_at": "today",
-      "created_by": "hitesh"
-    },
-    {
-      "endpoint_id": "32",
-      "client_id": "3",
-      "workflow_graph": "1",
-      "endpoints_details": "dummy",
-      "created_at": "today",
-      "updated_at": "today",
-      "created_by": "hitesh"
-    }
-  ],
-  "4": [
-    {
-      "endpoint_id": "41",
-      "client_id": "4",
-      "workflow_graph": "1",
-      "endpoints_details": "dummy",
-      "created_at": "today",
-      "updated_at": "today",
-      "created_by": "hitesh"
-    }
-  ]
-}
+[
+  {
+    "endpoint_name": "first endpoint",
+    "endpoint_id": "11",
+    "client_id": "1",
+    "workflow_graph": "1",
+    "endpoints_details": "dummy",
+    "created_at": "today",
+    "updated_at": "today",
+    "created_by": "hitesh"
+  },
+  {
+    "endpoint_name": "second endpoint",
+    "endpoint_id": "12",
+    "client_id": "1",
+    "workflow_graph": "1",
+    "endpoints_details": "dummy",
+    "created_at": "today",
+    "updated_at": "today",
+    "created_by": "hitesh"
+  },
+  {
+    "endpoint_name": "third endpoint",
+    "endpoint_id": "21",
+    "client_id": "2",
+    "workflow_graph": "1",
+    "endpoints_details": "dummy",
+    "created_at": "today",
+    "updated_at": "today",
+    "created_by": "hitesh"
+  },
+  {
+    "endpoint_name": "forth endpoint",
+    "endpoint_id": "22",
+    "client_id": "2",
+    "workflow_graph": "1",
+    "endpoints_details": "dummy",
+    "created_at": "today",
+    "updated_at": "today",
+    "created_by": "hitesh"
+  },
+  {
+    "endpoint_name": "fifth endpoint",
+    "endpoint_id": "31",
+    "client_id": "3",
+    "workflow_graph": "1",
+    "endpoints_details": "dummy",
+    "created_at": "today",
+    "updated_at": "today",
+    "created_by": "hitesh"
+  },
+  {
+    "endpoint_name": "sixth endpoint",
+    "endpoint_id": "32",
+    "client_id": "3",
+    "workflow_graph": "1",
+    "endpoints_details": "dummy",
+    "created_at": "today",
+    "updated_at": "today",
+    "created_by": "hitesh"
+  },
+  {
+    "endpoint_name": "seventh endpoint",
+    "endpoint_id": "41",
+    "client_id": "4",
+    "workflow_graph": "1",
+    "endpoints_details": "dummy",
+    "created_at": "today",
+    "updated_at": "today",
+    "created_by": "hitesh"
+  }
+]

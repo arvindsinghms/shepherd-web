@@ -40,16 +40,16 @@ class ClientComponent extends Component {
                 <Row className="show-grid">
                     <Col md={3} mdPush={9} className="left-panel">
                         <div>
-                            <div className="left-panel-heading">{clientId && <Link className="back" to="/">&laquo;</Link>}<span>{client.name}</span></div>
+                            <div className="left-panel-heading">{clientId && <Link className="back" to="/">&laquo;</Link>}<span>{client.client_name}</span></div>
                             <ul>
                                 {
-                                    endPointsAPI.all().map(obj => (
-                                        <li key={obj.number}>
-                                            <span className="end-point">{obj.name}</span>
+                                    endPointsAPI.get(client.client_id).map(obj => (
+                                        <li key={obj.endpoint_id}>
+                                            <span className="end-point">{obj.endpoint_name}</span>
                                             <ButtonGroup>
                                                 <Button className="xsmall-btn" bsStyle="default" bsSize="xsmall">Data</Button>
                                                 <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall">Visualise Graph</Button>
-                                                <Button className="xsmall-btn execute" bsStyle="info" bsSize="small"><Link to={`/client/${clientId}/${obj.number}`}>Executions</Link></Button>
+                                                <Button className="xsmall-btn execute" bsStyle="info" bsSize="small"><Link to={`/client/${clientId}/${obj.endpoint_id}`}>Executions</Link></Button>
                                             </ButtonGroup>
                                         </li>
                                     ))

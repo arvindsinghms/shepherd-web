@@ -1,8 +1,8 @@
 {
-  "execution_id": "121",
+  "execution_id": "311",
   "attempt_id": "1111",
   "attempts": [{
-    "name": "Trigger delete from CX page",
+    "name": "first step",
     "attributes": {
       "keyA": "val A",
       "keyB": "val B",
@@ -16,7 +16,7 @@
       }
     },
     "children": [{
-      "name": "Trigger delete from visits page",
+      "name": "second step",
       "attributes": {
         "keyA": "val A",
         "keyB": "val B",
@@ -30,7 +30,7 @@
         }
       },
       "children": [{
-        "name": "Trigger delete from drives page",
+        "name": "third step",
         "attributes": {
           "keyA": "val A",
           "keyB": "val B",
@@ -44,7 +44,7 @@
           }
         },
         "children": [{
-          "name": "Trigger delete from expense page",
+          "name": "forth step",
           "attributes": {
             "keyA": "val A",
             "keyB": "val B",

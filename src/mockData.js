@@ -1,64 +1,78 @@
-import clients from './service/clients.json';
+import clientsData from './service/clients.json';
 import endPoints from './service/endPoints.json';
+import executions from './service/executions.json';
 import attempt1 from './service/attempt1.json';
 import attempt2 from './service/attempt2.json';
 import attempt3 from './service/attempt3.json';
 import attempt4 from './service/attempt4.json';
+import attempt5 from './service/attempt5.json';
+import attempt6 from './service/attempt6.json';
+import attempt7 from './service/attempt7.json';
+import attempt8 from './service/attempt8.json';
+import attempt9 from './service/attempt9.json';
+import attempt10 from './service/attempt10.json';
+import attempt11 from './service/attempt11.json';
+import attempt12 from './service/attempt12.json';
+import attempt13 from './service/attempt13.json';
+import attempt14 from './service/attempt14.json';
+import attempt15 from './service/attempt15.json';
+import attempt16 from './service/attempt16.json';
 
 export const clientsAPI = {
-    clients: [
-        {number: 1, name: 'client 1'},
-        {number: 2, name: 'client 2'},
-        {number: 3, name: 'client 3'},
-        {number: 4, name: 'client 4'}
-    ],
+    clients: clientsData,
     all: function() { return this.clients },
     get: function (id) {
-        const isClient = client => client.number === id;
+        const isClient = client => parseInt(client.client_id, 10) === parseInt(id, 10);
         return this.clients.find(isClient);
     }
 };
 
 export const endPointsAPI = {
-    executions: [
-        {number: 1, name: 'end point 1'},
-        {number: 2, name: 'end point 2'},
-        {number: 3, name: 'end point 3'}
-    ],
-    all: function() { return this.executions },
-    get: function (id) {
-        const isExecution = execution => execution.number === id;
-        return this.executions.find(isExecution);
+    endPoints: endPoints,
+    all: function() { return this.endPoints },
+    get: function (clientId) {
+        const isEndPoint = endPoint => endPoint.client_id === clientId;
+        return this.endPoints.filter(isEndPoint);
+    },
+    getEndPointById: function(endPointId) {
+        const isEndPoint = endPoint => endPoint.endpoint_id === endPointId;
+        return this.endPoints.find(isEndPoint);
     }
 };
 
 export const executionAPI = {
-    executions: [
-        {number: 1, name: 'exe 1'},
-        {number: 2, name: 'exe 2'},
-        {number: 3, name: 'exe 3'}
-    ],
+    executions: executions,
     all: function() { return this.executions },
-    get: function (id) {
-        const isExecution = execution => execution.number === id;
-        return this.executions.find(isExecution);
+    get: function (endPointId) {
+        const isExecution = execution => execution.endpoint_id === endPointId;
+        return this.executions.filter(isExecution);
+        //return this.executions[endPointId];
     }
 };
 
 export const attemptsAPI = {
     attempts: [
-        {number: 1, name: 'attempt 1'},
-        {number: 2, name: 'attempt 2'},
-        {number: 3, name: 'attempt 3'}
+        {...attempt1},
+        {...attempt2},
+        {...attempt3},
+        {...attempt4},
+        {...attempt5},
+        {...attempt6},
+        {...attempt7},
+        {...attempt8},
+        {...attempt9},
+        {...attempt10},
+        {...attempt11},
+        {...attempt12},
+        {...attempt13},
+        {...attempt14},
+        {...attempt15},
+        {...attempt16}
     ],
     all: function() { return this.attempts },
     get: function (id) {
-        console.log("called");
-        //const isExecution = attempt => attempt.id === id;
-        //return this.attempts.find(isExecution);
-        return new Promise((resolve, reject) => {
-            //resolve(isExecution.attempts);
-            resolve(attempt4);
-        });
+        const isAttempt = execution => parseInt(execution.execution_id, 10) === parseInt(id, 10);
+        return this.attempts.find(isAttempt);
+
     }
 };

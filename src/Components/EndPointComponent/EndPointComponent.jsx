@@ -180,15 +180,21 @@ class EndPointComponent extends Component {
         };
     }
 
-    renderChart() {
-        let chart;
-        attemptsAPI.get(4).then((data) => {
-            chart = data;
-            this.setState({
-                currentChart: chart
-            });
+    renderChart(chart) {
+        let arr = [];
+        if(!chart.hasOwnProperty("name"))
+            return;
+        arr.push(chart);
+        this.setState({
+            currentChart: arr
         });
-
+        // let chart;
+        // attemptsAPI.get(4).then((data) => {
+        //     chart = data;
+        //     this.setState({
+        //         currentChart: chart
+        //     });
+        // });
     }
 
     sortableTreeChange(treeData ){
@@ -209,24 +215,25 @@ class EndPointComponent extends Component {
     render() {
         const endPointId = this.props.match.params.endPointId;
         const clientId = this.props.match.params.clientId;
-        const endPoint = endPointsAPI.get(
+        const execution = executionAPI.get(
             parseInt(endPointId, 10)
         );
-        if (!endPoint) {
-            return <div>Sorry! but the client was not found</div>
+        if (!execution) {
+            return <div>Sorry! but the execution was not found</div>
         }
+        const client = endPointsAPI.getEndPointById(endPointId);
         return (
             <Grid fluid={true}>
                 <Row className="show-grid">
                     <Col md={3} mdPush={3} className="left-panel">
                         <div>
-                            <div className="left-panel-heading">{endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}<span>{endPoint.name}</span></div>
+                            <div className="left-panel-heading">{endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}<span>{client.endpoint_name}</span></div>
                             <div>
                                 {
-                                    executionAPI.all().map(obj => (
-                                        <ul key={obj.number} onClick={this.renderChart} className="executions">
+                                    executionAPI.get(endPointId).map(obj => (
+                                        <ul key={obj.execution_id} onClick={this.renderChart} className="executions">
                                             <li className="execution-name">{obj.name}</li>
-                                            <li className="no-hover-effect attempts"><AttemptsComponent attempts={attemptsAPI.all()}/></li>
+                                            <li className="no-hover-effect attempts"><AttemptsComponent renderChart={this.renderChart} attempts={attemptsAPI.get(obj.execution_id).attempts}/></li>
                                         </ul>
                                     ))
                                 }

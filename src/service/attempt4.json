@@ -1,19 +1,9 @@
-[{
-  "name": "first step",
-  "attributes": {
-    "keyA": "val A",
-    "keyB": "val B",
-    "keyC": "val C"
-  },
-  "nodeSvgShape": {
-    "shape": "circle",
-    "shapeProps": {
-      "r": 10,
-      "fill": "green"
-    }
-  },
-  "children": [{
-    "name": "second step",
+{
+  "execution_id": "122",
+  "attempt_id": "1111",
+  "attempt_name": "attempt4",
+  "attempts": [{
+    "name": "first step",
     "attributes": {
       "keyA": "val A",
       "keyB": "val B",
@@ -27,7 +17,7 @@
       }
     },
     "children": [{
-      "name": "third step",
+      "name": "second step",
       "attributes": {
         "keyA": "val A",
         "keyB": "val B",
@@ -41,7 +31,69 @@
         }
       },
       "children": [{
-        "name": "forth step",
+        "name": "third step",
+        "attributes": {
+          "keyA": "val A",
+          "keyB": "val B",
+          "keyC": "val C"
+        },
+        "nodeSvgShape": {
+          "shape": "circle",
+          "shapeProps": {
+            "r": 10,
+            "fill": "green"
+          }
+        },
+        "children": [{
+          "name": "forth step",
+          "attributes": {
+            "keyA": "val A",
+            "keyB": "val B",
+            "keyC": "val C"
+          },
+          "nodeSvgShape": {
+            "shape": "circle",
+            "shapeProps": {
+              "r": 10,
+              "fill": "green"
+            }
+          },
+          "children": [{
+            "name": "Process Done",
+            "attributes": {
+              "keyA": "val A",
+              "keyB": "val B",
+              "keyC": "val C"
+            },
+            "nodeSvgShape": {
+              "shape": "circle",
+              "shapeProps": {
+                "r": 10,
+                "fill": "green"
+              }
+            }
+          },
+            {
+              "name": "Process Done",
+              "attributes": {
+                "keyA": "val A",
+                "keyB": "val B",
+                "keyC": "val C"
+              },
+              "nodeSvgShape": {
+                "shape": "circle",
+                "shapeProps": {
+                  "r": 10,
+                  "fill": "green"
+                }
+              }
+            }
+          ]
+        }]
+      }]
+    },
+      {
+        "name": "Level 2 B",
         "attributes": {
           "keyA": "val A",
           "keyB": "val B",
@@ -85,54 +137,7 @@
             }
           }
         ]
-      }]
-    }]
-  },
-    {
-      "name": "Level 2 B",
-      "attributes": {
-        "keyA": "val A",
-        "keyB": "val B",
-        "keyC": "val C"
-      },
-      "nodeSvgShape": {
-        "shape": "circle",
-        "shapeProps": {
-          "r": 10,
-          "fill": "green"
-        }
-      },
-      "children": [{
-        "name": "Process Done",
-        "attributes": {
-          "keyA": "val A",
-          "keyB": "val B",
-          "keyC": "val C"
-        },
-        "nodeSvgShape": {
-          "shape": "circle",
-          "shapeProps": {
-            "r": 10,
-            "fill": "green"
-          }
-        }
-      },
-        {
-          "name": "Process Done",
-          "attributes": {
-            "keyA": "val A",
-            "keyB": "val B",
-            "keyC": "val C"
-          },
-          "nodeSvgShape": {
-            "shape": "circle",
-            "shapeProps": {
-              "r": 10,
-              "fill": "green"
-            }
-          }
-        }
-      ]
-    }
-  ]
-}]
+      }
+    ]
+  }]
+}

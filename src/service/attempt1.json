@@ -1,5 +1,6 @@
 {
-  "id": "1",
+  "execution_id": "111",
+  "attempt_id": "1111",
   "attempts": [{
     "name": "Trigger delete from CX page",
     "attributes": {
@@ -90,8 +91,22 @@
         }]
       }]
     },
-      {
-        "name": "Level 2 B",
+    {
+      "name": "Level 2 B",
+      "attributes": {
+        "keyA": "val A",
+        "keyB": "val B",
+        "keyC": "val C"
+      },
+      "nodeSvgShape": {
+        "shape": "circle",
+        "shapeProps": {
+          "r": 10,
+          "fill": "green"
+        }
+      },
+      "children": [{
+        "name": "Process Done",
         "attributes": {
           "keyA": "val A",
           "keyB": "val B",
@@ -103,40 +118,24 @@
             "r": 10,
             "fill": "green"
           }
+        }
+      },
+      {
+        "name": "Process Done",
+        "attributes": {
+          "keyA": "val A",
+          "keyB": "val B",
+          "keyC": "val C"
         },
-        "children": [{
-          "name": "Process Done",
-          "attributes": {
-            "keyA": "val A",
-            "keyB": "val B",
-            "keyC": "val C"
-          },
-          "nodeSvgShape": {
-            "shape": "circle",
-            "shapeProps": {
-              "r": 10,
-              "fill": "green"
-            }
+        "nodeSvgShape": {
+          "shape": "circle",
+          "shapeProps": {
+            "r": 10,
+            "fill": "green"
           }
-        },
-          {
-            "name": "Process Done",
-            "attributes": {
-              "keyA": "val A",
-              "keyB": "val B",
-              "keyC": "val C"
-            },
-            "nodeSvgShape": {
-              "shape": "circle",
-              "shapeProps": {
-                "r": 10,
-                "fill": "green"
-              }
-            }
-          }
-        ]
-      }
-    ]
+        }
+      }]
+    }]
   }]
 }
 
