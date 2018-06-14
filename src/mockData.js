@@ -17,22 +17,37 @@ import attempt13 from './service/attempt13.json';
 import attempt14 from './service/attempt14.json';
 import attempt15 from './service/attempt15.json';
 import attempt16 from './service/attempt16.json';
+import { setToLocalstorage, fetchFromLocalstorage } from './utils/util';
 
 export const clientsAPI = {
-    clients: clientsData,
+    clients: fetchFromLocalstorage('clients') || clientsData,
     all: function() { return this.clients },
     get: function (id) {
-        const isClient = client => parseInt(client.client_id, 10) === parseInt(id, 10);
+        const isClient = client => client.client_id === id;
         return this.clients.find(isClient);
+    },
+    add: function(client) {
+        this.clients.push(client);
+        setToLocalstorage('clients', this.clients);
+        return new Promise((resolve, reject) => {
+            resolve({});
+        });
     }
 };
 
 export const endPointsAPI = {
-    endPoints: endPoints,
+    endPoints: fetchFromLocalstorage('endpoints') || endPoints,
     all: function() { return this.endPoints },
     get: function (clientId) {
         const isEndPoint = endPoint => endPoint.client_id === clientId;
         return this.endPoints.filter(isEndPoint);
+    },
+    add: function(endpoint) {
+        this.endPoints.push(endpoint);
+        setToLocalstorage('endpoints', this.endPoints);
+        return new Promise((resolve, reject) => {
+            resolve({});
+        });
     },
     getEndPointById: function(endPointId) {
         const isEndPoint = endPoint => endPoint.endpoint_id === endPointId;
@@ -71,7 +86,7 @@ export const attemptsAPI = {
     ],
     all: function() { return this.attempts },
     get: function (id) {
-        const isAttempt = execution => parseInt(execution.execution_id, 10) === parseInt(id, 10);
+        const isAttempt = execution => execution.execution_id === id;
         return this.attempts.find(isAttempt);
 
     }

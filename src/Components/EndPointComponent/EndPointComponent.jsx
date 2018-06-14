@@ -225,13 +225,12 @@ class EndPointComponent extends Component {
     render() {
         const endPointId = this.props.match.params.endPointId;
         const clientId = this.props.match.params.clientId;
-        const execution = executionAPI.get(
-            parseInt(endPointId, 10)
-        );
-        if (!execution) {
-            return <div>Sorry! but the execution was not found</div>
+        const endpoint = executionAPI.get(endPointId);
+        if (!endpoint) {
+            return <div>Sorry! but the endpoint was not found</div>
         }
         const client = endPointsAPI.getEndPointById(endPointId);
+        const executions = executionAPI.get(endPointId);
         return (
             <Grid fluid={true}>
                 <Row className="show-grid">
@@ -239,27 +238,33 @@ class EndPointComponent extends Component {
                         <div>
                             <div className="left-panel-heading">{endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}<span>{client.endpoint_name}</span></div>
                             <div>
-                                {
-                                    executionAPI.get(endPointId).map(obj => (
+                                { !executions.length && <div className="no-history">No Execution history found</div> }
+                                { executions.length > 0 &&
+                                    executions.map(obj => (
                                         <ul key={obj.execution_id} onClick={this.renderChart} className="executions">
                                             <li className="execution-name">{obj.name}</li>
                                             <li className="no-hover-effect attempts"><AttemptsComponent renderChart={this.renderChart} attempts={attemptsAPI.get(obj.execution_id).attempts}/></li>
                                         </ul>
                                     ))
                                 }
-
                             </div>
                         </div>
                     </Col>
                     <Col md={9} mdPull={9} className="right-panel">
-                        <ButtonGroup vertical={true} className="execution-actions">
-                            <Button bsStyle="success" bsSize="small">Resume</Button>
-                            <Button bsStyle="primary" bsSize="small">Restart</Button>
-                            <Button bsStyle="danger" bsSize="small" >Kill</Button>
-                        </ButtonGroup>
+                    {
+                        executions.length > 0 &&
+
                         <div>
-                            <svg width="960" height="600"><g/></svg>
+                            <ButtonGroup vertical={true} className="execution-actions">
+                                <Button bsStyle="success" bsSize="small">Resume</Button>
+                                <Button bsStyle="primary" bsSize="small">Restart</Button>
+                                <Button bsStyle="danger" bsSize="small" >Kill</Button>
+                            </ButtonGroup>
+                            <div>
+                                <svg width="960" height="600"><g/></svg>
+                            </div>
                         </div>
+                    }
                     </Col>
                 </Row>
             </Grid>

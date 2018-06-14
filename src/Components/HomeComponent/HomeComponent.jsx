@@ -4,17 +4,42 @@ import { Link } from 'react-router-dom';
 import { clientsAPI } from '../../mockData';
 import { Grid, Row, Col, FormGroup, FormControl, Button } from 'react-bootstrap';
 
+import { guid } from '../../utils/util';
+
+function createClient(clientName) {
+    let obj = {};
+    obj.client_id = guid();
+    obj.client_name = clientName;
+    obj.created_at = new Date();
+    obj.updated_at = new Date();
+    obj.created_by = "Hitesh";
+
+    return obj;
+}
+
 class HomeComponent extends Component {
     constructor(props, context) {
         super(props, context);
         this.handleChange = this.handleChange.bind(this);
+        this.addClient = this.addClient.bind(this);
         this.state = {
-            value: ''
+            value: '',
+            clients: clientsAPI.all()
         };
     }
 
     handleChange(e) {
         this.setState({ value: e.target.value });
+    }
+
+    addClient() {
+        let client = createClient(this.state.value);
+        clientsAPI.add(client).then(() => {
+            this.setState({
+                clients: clientsAPI.all(),
+                value: ''
+            });
+        })
     }
 
     render() {
@@ -26,7 +51,7 @@ class HomeComponent extends Component {
                             <div className="left-panel-heading">Registered Clients</div>
                             <ul>
                                 {
-                                    clientsAPI.all().map(obj => (
+                                    this.state.clients.map(obj => (
                                         <li key={obj.client_id}>
                                             <Link to={`/client/${obj.client_id}`} className="clients">{obj.client_name}</Link>
                                         </li>
@@ -49,7 +74,7 @@ class HomeComponent extends Component {
                                         placeholder="Enter Client Name"
                                         onChange={this.handleChange}
                                     />
-                                    <Button bsStyle="primary" className="add-client">
+                                    <Button bsStyle="primary" className="add-client" onClick={this.addClient}>
                                         Register Client
                                     </Button>
                                 </FormGroup>
