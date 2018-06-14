@@ -258,16 +258,15 @@ class EndPointComponent extends Component {
                         </div>
                     </Col>
                     <Col md={9} mdPull={9} className="right-panel">
-                    {
+{/*                    {
                         executions.length > 0 &&
                         this.state.mode === 'execute_workflow' &&
                         <div>
 
                         </div>
-                    }
+                    }*/}
                     {
                         executions.length > 0 &&
-                        this.state.mode === 'render_chart' &&
                         <div>
                             <ButtonGroup vertical={true} className="execution-actions">
                                 <Button bsStyle="success" bsSize="small">Resume</Button>
