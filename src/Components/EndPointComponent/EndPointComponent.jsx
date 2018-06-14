@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {executionAPI, attemptsAPI, endPointsAPI} from "../../mockData";
 import { Link } from 'react-router-dom';
-import { Grid, Row, Col, Button, ButtonGroup  } from 'react-bootstrap';
+import { Grid, Row, Col, Button, ButtonGroup, FormGroup, ControlLabel, FormControl, InputGroup, Form  } from 'react-bootstrap';
 import AttemptsComponent from './AttemptsComponent';
 import dagreD3 from 'dagre-d3';
 import { select, zoom, zoomIdentity, event } from 'd3';
@@ -159,10 +159,19 @@ class EndPointComponent extends Component {
     constructor() {
         super();
         this.renderChart = this.renderChart.bind(this);
+        this.createFormRows = this.createFormRows.bind(this);
         this.state = {
             currentChart: myTreeData,
-            mode: 'execute_workflow'
+            mode: 'execute_workflow',
+            payLoad: {},
+            payloadCounter: 1
         };
+    }
+
+    setMode(mode) {
+        this.setState({
+            mode: mode
+        })
     }
 
     renderChart(chart) {
@@ -174,13 +183,11 @@ class EndPointComponent extends Component {
             mode: 'render_chart',
             currentChart: arr
         });
-
     }
 
     addNodes(graph, data){
         data.forEach((function(node){
             graph.setNode(node.name, {});
-            // for()
             if(node.children && node.children.length){
                 graph = this.addNodes(graph, node.children);
                 node.children.forEach(function(child){
@@ -221,9 +228,36 @@ class EndPointComponent extends Component {
         inner.attr("transform", "translate(" + xCenterOffset + ", 20)");
     }
 
-    componentDidMount() {
-        this.createChart();
+    executeEndPoint() {
+
     }
+
+    componentDidUpdate() {
+        if(this.state.mode === 'render_chart')
+            this.createChart();
+    }
+
+    createFormRows = () => {
+        let arr = [];
+        let counter = this.state.payloadCounter;
+        for(let i = 0; i < counter; i++) {
+            arr.push(<FormGroup key={i} className="execution-form-item">
+                <InputGroup>
+                    <FormControl type="text" />
+                    <FormControl type="text" className="item-content" />
+                </InputGroup>
+            </FormGroup>);
+        }
+        return arr;
+    };
+
+    addRow() {
+        console.log("called 1");
+        this.setState({
+            payloadCounter: this.state.payloadCounter+1
+        });
+        console.log(this.state.payloadCounter);
+    };
 
     render() {
         const endPointId = this.props.match.params.endPointId;
@@ -242,7 +276,7 @@ class EndPointComponent extends Component {
                             <div className="left-panel-heading">
                                 {endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}
                                 <span>{client.endpoint_name}</span>
-                                <span title="Add Execution" className="add-element">+</span>
+                                <span title="Add Execution" className="add-element" onClick={() => this.setMode('execute_workflow')}>+</span>
                             </div>
                             <div>
                                 { !executions.length && <div className="no-history">No Execution history found</div> }
@@ -258,15 +292,22 @@ class EndPointComponent extends Component {
                         </div>
                     </Col>
                     <Col md={9} mdPull={9} className="right-panel">
-{/*                    {
-                        executions.length > 0 &&
+                    {
                         this.state.mode === 'execute_workflow' &&
-                        <div>
-
+                        <div className="add-execution-form-container">
+                            <div className="execution-form-title">Add Initial payload in key value pair</div>
+                            <Form componentClass="fieldset" inline>
+                                {this.createFormRows()}
+                            </Form>
+                            <Button bsStyle="primary" className="add-client" onClick={() => this.executeEndPoint()}>
+                                Execute endpoint
+                            </Button>
+                            <Button bsStyle="primary" className="add-client add-form-row" onClick={() => this.addRow()}>+</Button>
                         </div>
-                    }*/}
+                    }
                     {
                         executions.length > 0 &&
+                        this.state.mode === 'render_chart' &&
                         <div>
                             <ButtonGroup vertical={true} className="execution-actions">
                                 <Button bsStyle="success" bsSize="small">Resume</Button>

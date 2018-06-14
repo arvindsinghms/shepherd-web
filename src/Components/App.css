@@ -210,4 +210,30 @@ footer{
     border-radius: 7px;
     color: rgba(255, 255, 355, 0.7);
     cursor: pointer;
+    background: #000;
+}
+
+.add-form-row {
+    margin-right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 0px 10px;
+}
+
+.add-execution-form-container {
+    padding: 20px;
+    width: 34%;
+}
+
+.execution-form-title {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.execution-form-item {
+    margin-bottom: 5px !important;
+}
+
+.item-content {
+    width: 20% !important;
 }
