@@ -48,7 +48,10 @@ class HomeComponent extends Component {
                 <Row className="show-grid">
                     <Col md={3} mdPush={3} className="left-panel">
                         <div>
-                            <div className="left-panel-heading">Registered Clients</div>
+                            <div className="left-panel-heading">
+                                <span>Registered Clients</span>
+                                <span title="Register New Client" className="add-element">+</span>
+                            </div>
                             <ul>
                                 {
                                     this.state.clients.map(obj => (

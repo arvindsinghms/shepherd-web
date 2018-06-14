@@ -160,7 +160,8 @@ class EndPointComponent extends Component {
         super();
         this.renderChart = this.renderChart.bind(this);
         this.state = {
-            currentChart: myTreeData
+            currentChart: myTreeData,
+            mode: 'execute_workflow'
         };
     }
 
@@ -170,8 +171,10 @@ class EndPointComponent extends Component {
             return;
         arr.push(chart);
         this.setState({
+            mode: 'render_chart',
             currentChart: arr
         });
+
     }
 
     addNodes(graph, data){
@@ -236,7 +239,11 @@ class EndPointComponent extends Component {
                 <Row className="show-grid">
                     <Col md={3} mdPush={3} className="left-panel">
                         <div>
-                            <div className="left-panel-heading">{endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}<span>{client.endpoint_name}</span></div>
+                            <div className="left-panel-heading">
+                                {endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}
+                                <span>{client.endpoint_name}</span>
+                                <span title="Add Execution" className="add-element">+</span>
+                            </div>
                             <div>
                                 { !executions.length && <div className="no-history">No Execution history found</div> }
                                 { executions.length > 0 &&
@@ -253,7 +260,14 @@ class EndPointComponent extends Component {
                     <Col md={9} mdPull={9} className="right-panel">
                     {
                         executions.length > 0 &&
+                        this.state.mode === 'execute_workflow' &&
+                        <div>
 
+                        </div>
+                    }
+                    {
+                        executions.length > 0 &&
+                        this.state.mode === 'render_chart' &&
                         <div>
                             <ButtonGroup vertical={true} className="execution-actions">
                                 <Button bsStyle="success" bsSize="small">Resume</Button>

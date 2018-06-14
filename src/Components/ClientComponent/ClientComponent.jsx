@@ -84,7 +84,11 @@ class ClientComponent extends Component {
                 <Row className="show-grid">
                     <Col md={3} mdPush={9} className="left-panel">
                         <div>
-                            <div className="left-panel-heading">{clientId && <Link className="back" to="/">&laquo;</Link>}<span>{client.client_name}</span></div>
+                            <div className="left-panel-heading">
+                                {clientId && <Link className="back" to="/">&laquo;</Link>}
+                                <span>{client.client_name}</span>
+                                <span title="Add Endpoint" className="add-element">+</span>
+                            </div>
                             { !isEndPointAvailable && <div className="no-history">No Endpoint Available</div> }
                             { isEndPointAvailable > 0 &&
                                 <ul>
