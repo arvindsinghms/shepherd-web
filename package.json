@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.1",
+    "d3": "^5.4.0",
+    "dagre-d3": "^0.6.1",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
     "react-d3-graph": "*",

@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import {executionAPI} from "../../mockData";
-import { Link } from 'react-router-dom';
-import { Grid, Row, Col } from 'react-bootstrap';
 
 class AttemptsComponent extends Component {
     constructor(props) {
         super(props);
     }
     clickHandler(obj) {
-        console.log("obj called");
         const { renderChart } = this.props;
         renderChart(obj);
     }

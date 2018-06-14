@@ -160,6 +160,16 @@ li.execution-name, li.execution-name:hover{
     text-decoration: none;
 }
 
+.execution-actions{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.execution-actions button{
+    margin-bottom: 5px;
+}
+
 a.back, a.back:hover {
     color: #fff;
     position: absolute;

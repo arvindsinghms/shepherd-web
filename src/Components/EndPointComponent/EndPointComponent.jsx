@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {executionAPI, attemptsAPI, endPointsAPI} from "../../mockData";
 import { Link } from 'react-router-dom';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Button, ButtonGroup  } from 'react-bootstrap';
 import AttemptsComponent from './AttemptsComponent';
-import Tree from 'react-d3-tree';
+import dagreD3 from 'dagre-d3';
+import { select, zoom, zoomIdentity, event } from 'd3';
+import './tree.css';
 
 const myTreeData = [
     {
@@ -153,24 +155,6 @@ const myTreeData = [
     },
 ];
 
-const containerStyles = {
-    width: '100%',
-    height: '100vh',
-};
-
-const separation = {
-    siblings: 2,
-    nonSiblings: 2
-};
-
-const textLayout = {
-    textAnchor: "start",
-    x: 20,
-    y: -10,
-    transform: undefined
-};
-
-
 class EndPointComponent extends Component {
     constructor() {
         super();
@@ -188,28 +172,54 @@ class EndPointComponent extends Component {
         this.setState({
             currentChart: arr
         });
-        // let chart;
-        // attemptsAPI.get(4).then((data) => {
-        //     chart = data;
-        //     this.setState({
-        //         currentChart: chart
-        //     });
-        // });
     }
 
-    sortableTreeChange(treeData ){
-        console.log(treeData);
-        this.setState({ treeData });
+    addNodes(graph, data){
+        data.forEach((function(node){
+            graph.setNode(node.name, {});
+            // for()
+            if(node.children && node.children.length){
+                graph = this.addNodes(graph, node.children);
+                node.children.forEach(function(child){
+                    graph.setEdge(node.name, child.name, {label: child.name});
+                });
+            }
+        }).bind(this));
+        return graph;
+    }
+
+    getTreeData(){
+        var g = new dagreD3.graphlib.Graph().setGraph({});
+        g = this.addNodes(g, myTreeData);
+        return g;
+    }
+
+    createChart(){
+        var g = this.getTreeData();
+
+        var svg = select("svg"),
+            inner = svg.select("g");
+
+        // Set up zoom support
+        var zoomed = zoom().on("zoom", function() {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoomed);
+
+        // Run the renderer. This is what draws the final graph.
+        new dagreD3.render()(inner, g);
+
+        // Center the graph
+        var initialScale = 0.75;
+        svg.call(zoomed.transform, zoomIdentity.translate((svg.attr("width") - g.graph().width * initialScale) / 2, 20).scale(initialScale));
+
+        // Center the graph
+        var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+        inner.attr("transform", "translate(" + xCenterOffset + ", 20)");
     }
 
     componentDidMount() {
-        const dimensions = this.treeContainer.getBoundingClientRect();
-        this.setState({
-            translate: {
-                x: dimensions.width / 2,
-                y: dimensions.height / 10
-            }
-        });
+        this.createChart();
     }
 
     render() {
@@ -242,14 +252,13 @@ class EndPointComponent extends Component {
                         </div>
                     </Col>
                     <Col md={9} mdPull={9} className="right-panel">
-                        <div style={containerStyles} ref={tc => (this.treeContainer = tc)}>
-                            <Tree
-                                data={this.state.currentChart}
-                                translate={this.state.translate}
-                                orientation={'vertical'}
-                                separation={separation}
-                                textLayout={textLayout}
-                            />
+                        <ButtonGroup vertical={true} className="execution-actions">
+                            <Button bsStyle="success" bsSize="small">Resume</Button>
+                            <Button bsStyle="primary" bsSize="small">Restart</Button>
+                            <Button bsStyle="danger" bsSize="small" >Kill</Button>
+                        </ButtonGroup>
+                        <div>
+                            <svg width="960" height="600"><g/></svg>
                         </div>
                     </Col>
                 </Row>
