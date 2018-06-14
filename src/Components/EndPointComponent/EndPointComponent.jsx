@@ -203,7 +203,7 @@ class EndPointComponent extends Component {
     }
 
     componentDidMount() {
-        const dimensions = this.treeContainer.getBoundingClientRect();
+        const dimensions = (this.treeContainer && this.treeContainer.getBoundingClientRect()) || 100;
         this.setState({
             translate: {
                 x: dimensions.width / 2,
@@ -215,13 +215,12 @@ class EndPointComponent extends Component {
     render() {
         const endPointId = this.props.match.params.endPointId;
         const clientId = this.props.match.params.clientId;
-        const execution = executionAPI.get(
-            parseInt(endPointId, 10)
-        );
-        if (!execution) {
-            return <div>Sorry! but the execution was not found</div>
+        const endpoint = executionAPI.get(endPointId);
+        if (!endpoint) {
+            return <div>Sorry! but the endpoint was not found</div>
         }
         const client = endPointsAPI.getEndPointById(endPointId);
+        const executions = executionAPI.get(endPointId);
         return (
             <Grid fluid={true}>
                 <Row className="show-grid">
@@ -229,28 +228,31 @@ class EndPointComponent extends Component {
                         <div>
                             <div className="left-panel-heading">{endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}<span>{client.endpoint_name}</span></div>
                             <div>
-                                {
-                                    executionAPI.get(endPointId).map(obj => (
+                                { !executions.length && <div className="no-history">No Execution history found</div> }
+                                { executions.length > 0 &&
+                                    executions.map(obj => (
                                         <ul key={obj.execution_id} onClick={this.renderChart} className="executions">
                                             <li className="execution-name">{obj.name}</li>
                                             <li className="no-hover-effect attempts"><AttemptsComponent renderChart={this.renderChart} attempts={attemptsAPI.get(obj.execution_id).attempts}/></li>
                                         </ul>
                                     ))
                                 }
-
                             </div>
                         </div>
                     </Col>
                     <Col md={9} mdPull={9} className="right-panel">
-                        <div style={containerStyles} ref={tc => (this.treeContainer = tc)}>
-                            <Tree
-                                data={this.state.currentChart}
-                                translate={this.state.translate}
-                                orientation={'vertical'}
-                                separation={separation}
-                                textLayout={textLayout}
-                            />
-                        </div>
+                        {
+                            executions.length > 0 &&
+                            <div style={containerStyles} ref={tc => (this.treeContainer = tc)}>
+                                <Tree
+                                    data={this.state.currentChart}
+                                    translate={this.state.translate}
+                                    orientation={'vertical'}
+                                    separation={separation}
+                                    textLayout={textLayout}
+                                />
+                            </div>
+                        }
                     </Col>
                 </Row>
             </Grid>
