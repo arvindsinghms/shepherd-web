@@ -39,6 +39,10 @@ class ClientComponent extends Component {
     }
 
     componentDidMount() {
+        this.getEndpoints();
+    }
+
+    getEndpoints(){
         const clientName = this.props.match.params.clientName;
         endPointsAPI.get(clientName, (data => {
             this.setState({
@@ -126,14 +130,7 @@ class ClientComponent extends Component {
     }
 
     addEndPoint(clientName) {
-        const cb = (data) => {
-            this.setState({
-                endPoints: [...this.state.endPoints, data],
-                nameValue: '',
-                XMLValue: '',
-                JSONValue: ''
-            })
-        };
+        const cb = this.getEndpoints.bind(this);
 
         if(this.state.nameValue.trim() !== '' && this.state.XMLValue.trim() !== '' && this.state.JSONValue.trim() !== '')
             endPointsAPI.add(clientName, this.state.nameValue, this.state.XMLValue, this.state.JSONValue, cb);

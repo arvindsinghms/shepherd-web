@@ -34,10 +34,14 @@ class HomeComponent extends Component {
         const cb = (client) => {
             this.setState({
                 clients: [...this.state.clients, client],
-                value: ''
+                value: '',
+                isLoading: false
             });
         };
         if(this.state.value.trim() !== '') {
+            this.setState({
+                isLoading: true
+            });
             clientsAPI.add(clientName, cb);
         }
     }
