@@ -1,23 +1,28 @@
 // IMPORT DATA FROM STATIC JSON FILE
-import clients from './clients.json';
 
 // COMPONENT
 const simulateError = false;
+const registerClientUrl = "http://ec2-54-173-37-0.compute-1.amazonaws.com:8080/shephard-core/register/client";
+const fetchClientsUrl = "http://ec2-54-173-37-0.compute-1.amazonaws.com:8080/shephard-core/retrieve/client";
+const fetchEndpointsUrl = "http://ec2-54-173-37-0.compute-1.amazonaws.com:8080/shephard-core/retrieve/endpoints";
+const createEndpointUrl = "http://ec2-54-173-37-0.compute-1.amazonaws.com:8080/shephard-core/register/endpoint";
 /**
  * get all client
  * @returns {Promise<any>}
  */
-export const fetchClients = () => {
-    return new Promise((resolve, reject) => {
-        // simulate lengthy service call
-        setTimeout(() => {
-            if (simulateError) {
-                reject('Failed to fetch list of zip codes');
-            } else {
-                resolve(clients);
-            }
-        }, 1000);
-    });
+export const fetchClients = (cb) => {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            const res = JSON.parse(xhttp.responseText);
+            if(typeof cb === 'function')
+                cb(res.message);
+        }
+    };
+
+    xhttp.open("GET", fetchClientsUrl, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
 };
 
 /**
@@ -25,17 +30,21 @@ export const fetchClients = () => {
  * @param clientName
  * @returns {Promise<any>}
  */
-export const addClient = (clientName) => {
-    return new Promise((resolve, reject) => {
-        // simulate lengthy service call
-        setTimeout(() => {
-            if (simulateError) {
-                reject('Failed to fetch list of zip codes');
-            } else {
-                resolve(clients);
-            }
-        }, 1000);
-    });
+export const addClient = (clientName, cb) => {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            const res = {
+                clientName: clientName,
+                clientId: JSON.parse(xhttp.responseText).clientId
+            };
+            if(typeof cb === 'function')
+                cb(res);
+        }
+    };
+    xhttp.open("POST", registerClientUrl, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify({"clientName": clientName}));
 };
 
 /**
@@ -43,17 +52,19 @@ export const addClient = (clientName) => {
  * @param clientId
  * @returns {Promise<any>}
  */
-export const fetchEndPoints = (clientId) => {
-    return new Promise((resolve, reject) => {
-        // simulate lengthy service call
-        setTimeout(() => {
-            if (simulateError) {
-                reject('Failed to fetch list of zip codes');
-            } else {
-                resolve(clients);
-            }
-        }, 1000);
-    });
+export const fetchEndPoints = (clientName, cb) => {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            const res = JSON.parse(xhttp.responseText);
+            if(typeof cb === 'function')
+                cb(res.message);
+        }
+    };
+    const url = fetchEndpointsUrl + "?clientName=" + clientName;
+    xhttp.open("GET", url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
 };
 
 /**
@@ -62,17 +73,27 @@ export const fetchEndPoints = (clientId) => {
  * @param endpoint_detail
  * @returns {Promise<any>}
  */
-export const createEndPoint = (workflow_graph, endpoint_detail) => {
-    return new Promise((resolve, reject) => {
-        // simulate lengthy service call
-        setTimeout(() => {
-            if (simulateError) {
-                reject('Failed to fetch list of zip codes');
-            } else {
-                resolve(clients);
-            }
-        }, 1000);
-    });
+export const createEndPoint = (clientName, endPointName, graphDetails, nodeDetails, cb) => {
+    var xhttp = new XMLHttpRequest();
+    const req = {
+        clientName: clientName,
+        endpointName: endPointName,
+        graphDetails: graphDetails,
+        nodeDetails: nodeDetails
+    }
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            const res = {
+                endPointName: endPointName,
+                clientName: clientName
+            };
+            if(typeof cb === 'function')
+                cb(res);
+        }
+    };
+    xhttp.open("POST", createEndpointUrl, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(req));
 };
 
 /**
@@ -81,16 +102,7 @@ export const createEndPoint = (workflow_graph, endpoint_detail) => {
  * @returns {Promise<any>}
  */
 export const fetchExecutions = (endpoint_id) => {
-    return new Promise((resolve, reject) => {
-        // simulate lengthy service call
-        setTimeout(() => {
-            if (simulateError) {
-                reject('Failed to fetch list of zip codes');
-            } else {
-                resolve(clients);
-            }
-        }, 1000);
-    });
+
 };
 
 /**
@@ -101,14 +113,5 @@ export const fetchExecutions = (endpoint_id) => {
  * @returns {Promise<any>}
  */
 export const executeWorkflow = (client_name, endpoint_name, payload) => {
-    return new Promise((resolve, reject) => {
-        // simulate lengthy service call
-        setTimeout(() => {
-            if (simulateError) {
-                reject('Failed to fetch list of zip codes');
-            } else {
-                resolve(clients);
-            }
-        }, 1000);
-    });
+
 };

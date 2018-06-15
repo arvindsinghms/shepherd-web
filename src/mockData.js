@@ -18,36 +18,43 @@ import attempt14 from './service/attempt14.json';
 import attempt15 from './service/attempt15.json';
 import attempt16 from './service/attempt16.json';
 import { setToLocalstorage, fetchFromLocalstorage } from './utils/util';
+import { addClient, fetchClients, fetchEndPoints, createEndPoint } from './service/service';
 
 export const clientsAPI = {
     clients: fetchFromLocalstorage('clients') || clientsData,
-    all: function() { return this.clients },
+    all: function(cb) {
+        //return this.clients
+        fetchClients(cb);
+    },
     get: function (id) {
         const isClient = client => client.client_id === id;
         return this.clients.find(isClient);
     },
-    add: function(client) {
-        this.clients.push(client);
-        setToLocalstorage('clients', this.clients);
-        return new Promise((resolve, reject) => {
-            resolve({});
-        });
+    add: function(clientName, cb) {
+        addClient(clientName, cb);
+        // this.clients.push(client);
+        // setToLocalstorage('clients', this.clients);
+        // return new Promise((resolve, reject) => {
+        //     resolve({});
+        // });
     }
 };
 
 export const endPointsAPI = {
     endPoints: fetchFromLocalstorage('endpoints') || endPoints,
     all: function() { return this.endPoints },
-    get: function (clientId) {
-        const isEndPoint = endPoint => endPoint.client_id === clientId;
-        return this.endPoints.filter(isEndPoint);
+    get: function (clientName, cb) {
+        //const isEndPoint = endPoint => endPoint.client_id === clientId;
+        //return this.endPoints.filter(isEndPoint);
+        fetchEndPoints(clientName, cb);
     },
-    add: function(endpoint) {
-        this.endPoints.push(endpoint);
-        setToLocalstorage('endpoints', this.endPoints);
-        return new Promise((resolve, reject) => {
-            resolve({});
-        });
+    add: function(clientName, endPointName, xmlData, jsonData, cb) {
+        // this.endPoints.push(endpoint);
+        // setToLocalstorage('endpoints', this.endPoints);
+        // return new Promise((resolve, reject) => {
+        //     resolve({});
+        // });
+        createEndPoint(clientName, endPointName, xmlData, jsonData, cb);
     },
     getEndPointById: function(endPointId) {
         const isEndPoint = endPoint => endPoint.endpoint_id === endPointId;

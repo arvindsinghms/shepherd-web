@@ -4,7 +4,6 @@ import { clientsAPI, endPointsAPI } from '../../mockData';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Button, ButtonGroup } from 'react-bootstrap';
 import '../App.css';
-import {guid} from "../../utils/util";
 import xml2js from "xml2js";
 import { pd } from "pretty-data";
 import Chart from "../../service/chart";
@@ -19,20 +18,6 @@ function FieldGroup({ id, label, help, ...props }) {
     );
 }
 
-function createEndPoint(clientId, endpointName) {
-    let obj = {};
-    obj.endpoint_name = endpointName;
-    obj.endpoint_id = guid();
-    obj.client_id = clientId;
-    obj.workflow_graph = "workflow graph";
-    obj.endpoints_details = "endpoints details"
-    obj.created_at = new Date();
-    obj.updated_at = new Date();
-    obj.created_by = "Hitesh";
-
-    return obj;
-}
-
 class ClientComponent extends Component {
     constructor(props, context) {
         super(props, context);
@@ -40,17 +25,24 @@ class ClientComponent extends Component {
         this.handleXMLChange = this.handleXMLChange.bind(this);
         this.handleJSONChange = this.handleJSONChange.bind(this);
         //this.addEndPoint = this.addEndPoint.bind(this);
-        const clientId = this.props.match.params.clientId;
-        const client = clientsAPI.get(clientId);
         this.state = {
             nameValue: '',
             XMLValue: '',
             JSONValue: '',
-            endPoints: (client && endPointsAPI.get(client.client_id)) || [],
+            endPoints: [],
             showData: false,
             showVisualization: false,
             currentEndpoint: ''
         };
+    }
+
+    componentDidMount() {
+        const clientName = this.props.match.params.clientName;
+        endPointsAPI.get(clientName, (data => {
+            this.setState({
+                endPoints: data
+            })
+        }));
     }
 
     handleNameChange(e) {
@@ -149,24 +141,19 @@ class ClientComponent extends Component {
         });
     }
 
-    addEndPoint(client) {
-        let endpoint = createEndPoint(client.client_id, this.state.nameValue);
-        endPointsAPI.add(endpoint).then(() => {
+    addEndPoint(clientName) {
+        const cb = (data) => {
             this.setState({
-                endPoints: endPointsAPI.get(client.client_id),
-                nameValue: '',
-                XMLValue: '',
-                JSONValue: ''
-            });
-        });
+                endPoints: [...this.state.endpoint, data]
+            })
+        };
+
+        if(this.state.nameValue.trim() !== '' && this.state.XMLValue.trim() !== '' && this.state.JSONValue.trim() !== '')
+            endPointsAPI.add(clientName, this.state.nameValue, this.state.XMLValue, this.state.JSONValue, cb);
     }
 
     render() {
-        const clientId = this.props.match.params.clientId;
-        const client = clientsAPI.get(clientId);
-        if (!client) {
-            return <div>Sorry! but the client was not found</div>
-        }
+        const clientName = this.props.match.params.clientName;
 
         const isEndPointAvailable = this.state.endPoints.length;
         return (
@@ -175,8 +162,8 @@ class ClientComponent extends Component {
                     <Col md={3} mdPush={9} className="left-panel">
                         <div>
                             <div className="left-panel-heading">
-                                {clientId && <Link className="back" to="/">&laquo;</Link>}
-                                <span>{client.client_name}</span>
+                                {clientName && <Link className="back" to="/">&laquo;</Link>}
+                                <span>{clientName}</span>
                                 <span title="Add Endpoint" className="add-element" onClick={this.showAddEndpoint.bind(this)}>+</span>
                             </div>
                             { !isEndPointAvailable && <div className="no-history">No Endpoint Available</div> }
@@ -184,13 +171,13 @@ class ClientComponent extends Component {
                                 <ul>
                                     {
                                         this.state.endPoints.map(obj => (
-                                            <li key={obj.endpoint_id}>
-                                                <span className="end-point">{obj.endpoint_name}</span>
+                                            <li key={obj.endpointId}>
+                                                <span className="end-point">{obj.endpointName}</span>
                                                 <ButtonGroup>
-                                                    <Button className="xsmall-btn" bsStyle="default" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpoint_id)}>Data</Button>
-                                                    <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpoint_id)}>Visualise Graph</Button>
-                                                    <Button className="xsmall-btn execute" bsStyle="info" bsSize="small"><Link to={`/client/${clientId}/${obj.endpoint_id}`}>Executions</Link></Button>
-                                                    <Button className="xsmall-btn delete" bsStyle="danger" bsSize="small" onClick={this.deleteEndpoint.bind(this, obj.endpoint_id)}>Delete</Button>
+                                                    <Button className="xsmall-btn" bsStyle="default" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointId)}>Data</Button>
+                                                    <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpointId)}>Visualise Graph</Button>
+                                                    <Button className="xsmall-btn execute" bsStyle="info" bsSize="small"><Link to={`/client/${clientName}/${obj.endpointId}`}>Executions</Link></Button>
+                                                    <Button className="xsmall-btn delete" bsStyle="danger" bsSize="small" onClick={this.deleteEndpoint.bind(this, obj.endpointId)}>Delete</Button>
                                                 </ButtonGroup>
                                             </li>
                                         ))
@@ -291,7 +278,7 @@ class ClientComponent extends Component {
                                                 value={this.state.JSONValue}
                                             />
                                         </FormGroup>
-                                        <Button bsStyle="primary" className="add-client" onClick={() => this.addEndPoint(client)}>
+                                        <Button bsStyle="primary" className="add-client" onClick={() => this.addEndPoint(clientName)}>
                                             Add Endpoint
                                         </Button>
                                     </FormGroup>

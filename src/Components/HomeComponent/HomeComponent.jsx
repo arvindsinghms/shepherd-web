@@ -4,19 +4,6 @@ import { Link } from 'react-router-dom';
 import { clientsAPI } from '../../mockData';
 import { Grid, Row, Col, FormGroup, FormControl, Button } from 'react-bootstrap';
 
-import { guid } from '../../utils/util';
-
-function createClient(clientName) {
-    let obj = {};
-    obj.client_id = guid();
-    obj.client_name = clientName;
-    obj.created_at = new Date();
-    obj.updated_at = new Date();
-    obj.created_by = "Hitesh";
-
-    return obj;
-}
-
 class HomeComponent extends Component {
     constructor(props, context) {
         super(props, context);
@@ -24,22 +11,33 @@ class HomeComponent extends Component {
         this.addClient = this.addClient.bind(this);
         this.state = {
             value: '',
-            clients: clientsAPI.all()
+            clients: []
         };
     }
+
+    componentDidMount() {
+        clientsAPI.all((data) => {
+            this.setState({
+                clients: data
+            })
+        });
+     }
 
     handleChange(e) {
         this.setState({ value: e.target.value });
     }
 
     addClient() {
-        let client = createClient(this.state.value);
-        clientsAPI.add(client).then(() => {
+        let clientName = this.state.value;
+        const cb = (client) => {
             this.setState({
-                clients: clientsAPI.all(),
+                clients: [...this.state.clients, client],
                 value: ''
             });
-        })
+        };
+        if(this.state.value.trim() !== '') {
+            clientsAPI.add(clientName, cb);
+        }
     }
 
     render() {
@@ -55,8 +53,8 @@ class HomeComponent extends Component {
                             <ul>
                                 {
                                     this.state.clients.map(obj => (
-                                        <li key={obj.client_id}>
-                                            <Link to={`/client/${obj.client_id}`} className="clients">{obj.client_name}</Link>
+                                        <li key={obj.clientId}>
+                                            <Link to={`/client/${obj.clientName}`} className="clients">{obj.clientName}</Link>
                                         </li>
                                     ))
                                 }
