@@ -187,7 +187,13 @@ class EndPointComponent extends Component {
 
     addNodes(graph, data){
         data.forEach((function(node){
-            graph.setNode(node.name, {});
+            var nodeProps = {};
+            // node.nodeSvgShape &&
+            //     (nodeProps.shape = (node.nodeSvgShape.shape || 'circle') &&
+            //         node.nodeSvgShape.shapeProps && (nodeProps.fill = node.nodeSvgShape.shapeProps.fill || 'grey'));
+            // console.log(nodeProps)
+            graph.setNode(node.name, nodeProps);
+            // for()
             if(node.children && node.children.length){
                 graph = this.addNodes(graph, node.children);
                 node.children.forEach(function(child){
