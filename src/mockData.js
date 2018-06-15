@@ -48,13 +48,13 @@ export const endPointsAPI = {
         //return this.endPoints.filter(isEndPoint);
         fetchEndPoints(clientName, cb);
     },
-    add: function(clientName, endPointName, xmlData, jsonData, cb) {
+    add: function(clientName, endpointName, xmlData, jsonData, cb) {
         // this.endPoints.push(endpoint);
         // setToLocalstorage('endpoints', this.endPoints);
         // return new Promise((resolve, reject) => {
         //     resolve({});
         // });
-        createEndPoint(clientName, endPointName, xmlData, jsonData, cb);
+        createEndPoint(clientName, endpointName, xmlData, jsonData, cb);
     },
     getEndPointById: function(endPointId) {
         const isEndPoint = endPoint => endPoint.endpoint_id === endPointId;
@@ -63,12 +63,18 @@ export const endPointsAPI = {
 };
 
 export const executionAPI = {
-    executions: executions,
+    executions: fetchFromLocalstorage('executions') || executions,
     all: function() { return this.executions },
-    get: function (endPointId) {
-        const isExecution = execution => execution.endpoint_id === endPointId;
+    get: function (endpointName) {
+        const isExecution = execution => execution.endpointName === endpointName;
         return this.executions.filter(isExecution);
-        //return this.executions[endPointId];
+    },
+    add: function(execution) {
+        debugger;
+        this.executions.push(execution);
+        setToLocalstorage('executions', this.executions);
+
+        // create default attempt
     }
 };
 

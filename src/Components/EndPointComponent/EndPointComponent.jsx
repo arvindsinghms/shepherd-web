@@ -7,18 +7,31 @@ import './tree.css';
 import Chart from '../../service/chart';
 import myTreeData from '../../service/treedata.json';
 
+function createExecution(endpointName, executionName) {
+    let obj = {};
+    obj.executionName = executionName;
+    obj.endpointName = endpointName;
+    return obj;
+}
+
 class EndPointComponent extends Component {
     constructor() {
         super();
         this.renderChart = this.renderChart.bind(this);
         this.createFormRows = this.createFormRows.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             currentChart: myTreeData,
             mode: 'execute_workflow',
             payLoad: {},
             payloadCounter: 1,
-            isLoading: false
+            isLoading: false,
+            executionFieldValue: ''
         };
+    }
+
+    handleChange(e) {
+        this.setState({ executionFieldValue: e.target.value });
     }
 
     setMode(mode) {
@@ -39,7 +52,10 @@ class EndPointComponent extends Component {
     }
 
     executeEndPoint() {
+        const endpointName = this.props.match.params.endpointName;
+        var execution = createExecution(endpointName, this.state.executionFieldValue);
 
+        executionAPI.add(execution);
     }
 
     componentDidUpdate() {
@@ -62,7 +78,6 @@ class EndPointComponent extends Component {
     };
 
     addRow() {
-        console.log("called 1");
         this.setState({
             payloadCounter: this.state.payloadCounter+1
         });
@@ -70,22 +85,22 @@ class EndPointComponent extends Component {
     };
 
     render() {
-        const endPointId = this.props.match.params.endPointId;
-        const clientId = this.props.match.params.clientId;
-        const endpoint = executionAPI.get(endPointId);
-        if (!endpoint) {
-            return <div>Sorry! but the endpoint was not found</div>
-        }
-        const client = endPointsAPI.getEndPointById(endPointId);
-        const executions = executionAPI.get(endPointId);
+        const endpointName = this.props.match.params.endpointName;
+        const clientName = this.props.match.params.clientName;
+        // const endpoint = executionAPI.get(endPointId);
+        // if (!endpoint) {
+        //     return <div>Sorry! but the endpoint was not found</div>
+        // }
+        //const client = endPointsAPI.getEndPointById(endPointId);
+        const executions = executionAPI.get(endpointName);
         return (
             <Grid fluid={true}>
                 <Row className="show-grid">
                     <Col md={3} mdPush={3} className="left-panel">
                         <div>
                             <div className="left-panel-heading">
-                                {endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}
-                                <span>{client.endpointName}</span>
+                                {endpointName && <Link className="back" to={`/client/${clientName}`}>&laquo;</Link>}
+                                <span>{endpointName}</span>
                                 <span title="Add Execution" className="add-element" onClick={() => this.setMode('execute_workflow')}>+</span>
                             </div>
                             <div>
@@ -94,7 +109,7 @@ class EndPointComponent extends Component {
                                     executions.map(obj => (
                                         <ul key={obj.execution_id} onClick={this.renderChart} className="executions">
                                             <li className="execution-name">{obj.name}</li>
-                                            <li className="no-hover-effect attempts"><AttemptsComponent renderChart={this.renderChart} attempts={attemptsAPI.get(obj.execution_id).attempts}/></li>
+                                            <li className="no-hover-effect attempts"><AttemptsComponent renderChart={this.renderChart} attempts={attemptsAPI.get(obj.executionName).attempts}/></li>
                                         </ul>
                                     ))
                                 }
@@ -105,6 +120,12 @@ class EndPointComponent extends Component {
                     {
                         this.state.mode === 'execute_workflow' &&
                         <div className="add-execution-form-container">
+                            <FormControl
+                                type="text"
+                                value={this.state.value}
+                                placeholder="Enter Execution Name"
+                                onChange={this.handleChange}
+                            />
                             <div className="execution-form-title">Add Initial payload in key value pair</div>
                             <Form componentClass="fieldset" inline>
                                 {this.createFormRows()}

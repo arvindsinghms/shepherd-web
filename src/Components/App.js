@@ -17,7 +17,7 @@ class App extends Component {
                 <div className="wrapper">
                     <Switch>
                         <Route exact path = '/' component={HomeComponent}/>
-                        <Route path = '/client/:clientName/:endPointName' component={EndPointComponent}/>
+                        <Route path = '/client/:clientName/:endpointName' component={EndPointComponent}/>
                         <Route path = '/client/:clientName' component={ClientComponent}/>
                     </Switch>
                 </div>
