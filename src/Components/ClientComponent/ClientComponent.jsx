@@ -7,7 +7,8 @@ import '../App.css';
 import xml2js from "xml2js";
 import { pd } from "pretty-data";
 import Chart from "../../service/chart";
-import myTreeData from '../../service/treedata.json';
+// import myTreeData from '../../service/treedata.json';
+import { getVisualizationJSON } from '../../service/service';
 
 function FieldGroup({ id, label, help, ...props }) {
     return (
@@ -58,49 +59,30 @@ class ClientComponent extends Component {
     showData(endpointName){
         this.state.endPoints.map((function(ep){
             if(ep.endpointName === endpointName){
-                var visualData = '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>';
-                xml2js.parseString(myTreeData, (function(err, result){
-                    if(!err){
-                        visualData = pd.json(JSON.stringify(myTreeData));
-                    } else {
-
-                    }
-                }).bind(this));
                 this.setState({
                     showData: true,
                     showVisualization: false,
                     currentEndpoint: ep.endpointName,
-                    data: pd.xml('<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>'),
-                    visualData: visualData
+                    daggraph: pd.xml(ep.daggraph),
+                    endpointDetails: ep.endpointDetails
                 })
             }
         }).bind(this));
     }
 
     showGraph(endpointName){
-        this.state.endPoints.map((function(ep){
-            if(ep.endpointName === endpointName){
-                var visualData = '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>';
-                this.setState({
-                    showData: false,
-                    showVisualization: true,
-                    currentEndpoint: ep.endpointName,
-                    visualData: visualData
-                });
-                xml2js.parseString(visualData, (function(err, result){
-                    if(!err){
-                        // Chart().createChart("svg", myTreeData);
-                    } else {
-
-                    }
-                }).bind(this));
-            }
+        getVisualizationJSON(this.props.match.params.clientName, endpointName, (function(res){
+            this.setState({
+                showData: false,
+                showVisualization: true,
+                graphData: res
+            });
         }).bind(this));
     }
 
     componentDidUpdate(){
         if(this.state.showVisualization)
-            Chart().createChart("svg", myTreeData);
+            Chart().createChart("svg", this.state.graphData);
     }
 
     deleteEndpoint(endPoint){
@@ -182,9 +164,9 @@ class ClientComponent extends Component {
                                             <li key={obj.endpointName}>
                                                 <span className="end-point">{obj.endpointName}</span>
                                                 <ButtonGroup>
-                                                    <Button className="xsmall-btn" bsStyle="default" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointName)}>Data</Button>
-                                                    <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpointName)}>Visualise Graph</Button>
-                                                    <Button className="xsmall-btn execute" bsStyle="info" bsSize="small"><Link to={`/client/${clientName}/${obj.endpointId}`}>Executions</Link></Button>
+                                                    <Button className="xsmall-btn" bsStyle="basic" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointName)}>Data</Button>
+                                                    <Button className="xsmall-btn" bsStyle="info" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpointName)}>Visualise Graph</Button>
+                                                    <Button className="xsmall-btn execute" bsStyle="success" bsSize="small"><Link to={`/client/${clientName}/${obj.endpointId}`}>Executions</Link></Button>
                                                     <Button className="xsmall-btn delete" bsStyle="danger" bsSize="small" onClick={this.deleteEndpoint.bind(this, obj.endpointId)}>Delete</Button>
                                                 </ButtonGroup>
                                             </li>
@@ -220,7 +202,7 @@ class ClientComponent extends Component {
                                                 rows="15"
                                                 onChange={this.handleXMLChange}
                                                 onBlur={this.validateXML.bind(this)}
-                                                value={this.state.data}
+                                                value={this.state.daggraph}
                                             />
                                         </FormGroup>
                                         <FormGroup controlId="formControlsTextarea">
@@ -231,13 +213,13 @@ class ClientComponent extends Component {
                                                 rows="25"
                                                 onChange={this.handleJSONChange}
                                                 onBlur={this.validateJSON}
-                                                value={this.state.visualData}
+                                                value={this.state.endpointDetails}
                                             />
                                         </FormGroup>
                                     </FormGroup>
                                 </form>
                                 <div style={{textAlign: "right"}}>
-                                    <Button bsStyle="primary" className="update-endpoint" disabled>Update</Button>
+                                    <Button bsStyle="info" className="update-endpoint" disabled>Update</Button>
                                     <p style={{fontSize: "10px"}}><i>*Update is currently disabled</i></p>
                                 </div>
                             </div>
@@ -286,7 +268,7 @@ class ClientComponent extends Component {
                                                 value={this.state.JSONValue}
                                             />
                                         </FormGroup>
-                                        <Button bsStyle="primary" className="add-client" onClick={() => this.addEndPoint(clientName)}>
+                                        <Button bsStyle="info" className="add-client" onClick={() => this.addEndPoint(clientName)}>
                                             Add Endpoint
                                         </Button>
                                     </FormGroup>
