@@ -11,14 +11,16 @@ class HomeComponent extends Component {
         this.addClient = this.addClient.bind(this);
         this.state = {
             value: '',
-            clients: []
+            clients: [],
+            isLoading: true
         };
     }
 
     componentDidMount() {
         clientsAPI.all((data) => {
             this.setState({
-                clients: data
+                clients: data,
+                isLoading: false
             })
         });
      }
@@ -41,6 +43,9 @@ class HomeComponent extends Component {
     }
 
     render() {
+        if(this.state.isLoading) {
+            return <div className="loading-panel"></div>
+        }
         return (
             <Grid fluid={true}>
                 <Row className="show-grid">

@@ -250,3 +250,22 @@ footer{
 .container-fluid{
     border-bottom: 1px solid #fff;
 }
+
+.loading-panel {
+    animation: shrink 1s infinite alternate;
+    background: url('../logo.png') center center scroll no-repeat #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+@keyframes shrink {
+    0% {
+        background-size: 5% auto;
+    }
+    100% {
+        background-size: 10% auto;
+    }
+}

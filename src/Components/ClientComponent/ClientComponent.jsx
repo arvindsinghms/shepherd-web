@@ -32,7 +32,8 @@ class ClientComponent extends Component {
             endPoints: [],
             showData: false,
             showVisualization: false,
-            currentEndpoint: ''
+            currentEndpoint: '',
+            isLoading: true
         };
     }
 
@@ -40,7 +41,8 @@ class ClientComponent extends Component {
         const clientName = this.props.match.params.clientName;
         endPointsAPI.get(clientName, (data => {
             this.setState({
-                endPoints: data
+                endPoints: data,
+                isLoading: false
             })
         }));
     }
@@ -156,6 +158,9 @@ class ClientComponent extends Component {
     }
 
     render() {
+        if(this.state.isLoading) {
+            return <div className="loading-panel"></div>
+        }
         const clientName = this.props.match.params.clientName;
 
         const isEndPointAvailable = this.state.endPoints.length;

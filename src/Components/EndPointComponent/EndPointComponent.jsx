@@ -16,7 +16,8 @@ class EndPointComponent extends Component {
             currentChart: myTreeData,
             mode: 'execute_workflow',
             payLoad: {},
-            payloadCounter: 1
+            payloadCounter: 1,
+            isLoading: false
         };
     }
 
@@ -84,7 +85,7 @@ class EndPointComponent extends Component {
                         <div>
                             <div className="left-panel-heading">
                                 {endPointId && <Link className="back" to={`/client/${clientId}`}>&laquo;</Link>}
-                                <span>{client.endpoint_name}</span>
+                                <span>{client.endpointName}</span>
                                 <span title="Add Execution" className="add-element" onClick={() => this.setMode('execute_workflow')}>+</span>
                             </div>
                             <div>
