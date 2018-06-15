@@ -1,159 +1,11 @@
 import React, { Component } from 'react';
 import {executionAPI, attemptsAPI, endPointsAPI} from "../../mockData";
 import { Link } from 'react-router-dom';
-import { Grid, Row, Col, Button, ButtonGroup, FormGroup, ControlLabel, FormControl, InputGroup, Form  } from 'react-bootstrap';
+import { Grid, Row, Col, Button, ButtonGroup, FormGroup, FormControl, InputGroup, Form  } from 'react-bootstrap';
 import AttemptsComponent from './AttemptsComponent';
-import dagreD3 from 'dagre-d3';
-import { select, zoom, zoomIdentity, event } from 'd3';
 import './tree.css';
-
-const myTreeData = [
-    {
-        name: 'Trigger delete from CX page',
-        attributes: {
-            keyA: 'val A',
-            keyB: 'val B',
-            keyC: 'val C',
-        },
-        nodeSvgShape: {
-            shape: 'circle',
-            shapeProps: {
-                r: 10,
-                fill: 'green'
-            }
-        },
-        children: [
-            {
-                name: 'Trigger delete from visits page',
-                attributes: {
-                    keyA: 'val A',
-                    keyB: 'val B',
-                    keyC: 'val C',
-                },
-                nodeSvgShape: {
-                    shape: 'circle',
-                    shapeProps: {
-                        r: 10,
-                        fill: 'green'
-                    }
-                },
-                children: [
-                    {
-                        name: 'Trigger delete from drives page',
-                        attributes: {
-                            keyA: 'val A',
-                            keyB: 'val B',
-                            keyC: 'val C',
-                        },
-                        nodeSvgShape: {
-                            shape: 'circle',
-                            shapeProps: {
-                                r: 10,
-                                fill: 'green'
-                            }
-                        },
-                        children: [
-                            {
-                                name: 'Trigger delete from expense page',
-                                attributes: {
-                                    keyA: 'val A',
-                                    keyB: 'val B',
-                                    keyC: 'val C',
-                                },
-                                nodeSvgShape: {
-                                    shape: 'circle',
-                                    shapeProps: {
-                                        r: 10,
-                                        fill: 'green'
-                                    }
-                                },
-                                children: [
-                                    {
-                                        name: 'Process Done',
-                                        attributes: {
-                                            keyA: 'val A',
-                                            keyB: 'val B',
-                                            keyC: 'val C',
-                                        },
-                                        nodeSvgShape: {
-                                            shape: 'circle',
-                                            shapeProps: {
-                                                r: 10,
-                                                fill: 'green'
-                                            }
-                                        }
-                                    },
-                                    {
-                                        name: 'Process Done',
-                                        attributes: {
-                                            keyA: 'val A',
-                                            keyB: 'val B',
-                                            keyC: 'val C',
-                                        },
-                                        nodeSvgShape: {
-                                            shape: 'circle',
-                                            shapeProps: {
-                                                r: 10,
-                                                fill: 'green'
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                name: 'Level 2: B',
-                attributes: {
-                    keyA: 'val A',
-                    keyB: 'val B',
-                    keyC: 'val C',
-                },
-                nodeSvgShape: {
-                    shape: 'circle',
-                    shapeProps: {
-                        r: 10,
-                        fill: 'green'
-                    }
-                },
-                children: [
-                    {
-                        name: 'Process Done',
-                        attributes: {
-                            keyA: 'val A',
-                            keyB: 'val B',
-                            keyC: 'val C',
-                        },
-                        nodeSvgShape: {
-                            shape: 'circle',
-                            shapeProps: {
-                                r: 10,
-                                fill: 'green'
-                            }
-                        }
-                    },
-                    {
-                        name: 'Process Done',
-                        attributes: {
-                            keyA: 'val A',
-                            keyB: 'val B',
-                            keyC: 'val C',
-                        },
-                        nodeSvgShape: {
-                            shape: 'circle',
-                            shapeProps: {
-                                r: 10,
-                                fill: 'green'
-                            }
-                        }
-                    }
-                ]
-            }
-        ]
-    },
-];
+import Chart from '../../service/chart';
+import myTreeData from '../../service/treedata.json';
 
 class EndPointComponent extends Component {
     constructor() {
@@ -185,62 +37,13 @@ class EndPointComponent extends Component {
         });
     }
 
-    addNodes(graph, data){
-        data.forEach((function(node){
-            var nodeProps = {};
-            // node.nodeSvgShape &&
-            //     (nodeProps.shape = (node.nodeSvgShape.shape || 'circle') &&
-            //         node.nodeSvgShape.shapeProps && (nodeProps.fill = node.nodeSvgShape.shapeProps.fill || 'grey'));
-            // console.log(nodeProps)
-            graph.setNode(node.name, nodeProps);
-            // for()
-            if(node.children && node.children.length){
-                graph = this.addNodes(graph, node.children);
-                node.children.forEach(function(child){
-                    graph.setEdge(node.name, child.name, {label: child.name});
-                });
-            }
-        }).bind(this));
-        return graph;
-    }
-
-    getTreeData(){
-        var g = new dagreD3.graphlib.Graph().setGraph({});
-        g = this.addNodes(g, myTreeData);
-        return g;
-    }
-
-    createChart(){
-        var g = this.getTreeData();
-
-        var svg = select("svg"),
-            inner = svg.select("g");
-
-        // Set up zoom support
-        var zoomed = zoom().on("zoom", function() {
-            inner.attr("transform", event.transform);
-        });
-        svg.call(zoomed);
-
-        // Run the renderer. This is what draws the final graph.
-        new dagreD3.render()(inner, g);
-
-        // Center the graph
-        var initialScale = 0.75;
-        svg.call(zoomed.transform, zoomIdentity.translate((svg.attr("width") - g.graph().width * initialScale) / 2, 20).scale(initialScale));
-
-        // Center the graph
-        var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
-        inner.attr("transform", "translate(" + xCenterOffset + ", 20)");
-    }
-
     executeEndPoint() {
 
     }
 
     componentDidUpdate() {
         if(this.state.mode === 'render_chart')
-            this.createChart();
+            Chart().createChart("svg", myTreeData);
     }
 
     createFormRows = () => {
@@ -321,7 +124,7 @@ class EndPointComponent extends Component {
                                 <Button bsStyle="danger" bsSize="small" >Kill</Button>
                             </ButtonGroup>
                             <div>
-                                <svg width="960" height="600"><g/></svg>
+                                <svg className="endpoint" width="960" height="600"><g/></svg>
                             </div>
                         </div>
                     }

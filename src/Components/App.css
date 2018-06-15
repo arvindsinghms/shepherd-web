@@ -172,8 +172,13 @@ li.execution-name, li.execution-name:hover{
 
 a.back, a.back:hover {
     color: #fff;
-    position: absolute;
-    left: 15px;
+    float: left;
+    margin-left: 15px;
+}
+
+.pretty-textarea{
+    width: 100%;
+    margin: 10px 0;
 }
 
 footer{
@@ -199,18 +204,17 @@ footer{
 }
 
 .add-element {
-    font-size: 30px;
-    border: 3px solid rgba(255, 255, 255, 0.7);
-    line-height: 22px;
-    margin-right: 10px;
-    position: absolute;
-    right: 0;
-    top: 9px;
-    padding: 0px 5px 5px 5px;
-    border-radius: 7px;
-    color: rgba(255, 255, 355, 0.7);
+    font-size: 25px;
+    line-height: 1em;
+    border-radius: 50%;
+    float: right;
+    color: #fff;
+    height: 30px;
+    width: 30px;
     cursor: pointer;
     background: #000;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
 .add-form-row {

@@ -7,6 +7,8 @@ import '../App.css';
 import {guid} from "../../utils/util";
 import xml2js from "xml2js";
 import { pd } from "pretty-data";
+import Chart from "../../service/chart";
+import myTreeData from '../../service/treedata.json';
 
 function FieldGroup({ id, label, help, ...props }) {
     return (
@@ -62,11 +64,20 @@ class ClientComponent extends Component {
     showData(endPoint){
         this.state.endPoints.map((function(ep){
             if(ep.endpoint_id === endPoint){
+                var visualData = '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>';
+                xml2js.parseString(myTreeData, (function(err, result){
+                    if(!err){
+                        visualData = pd.json(JSON.stringify(myTreeData));
+                    } else {
+
+                    }
+                }).bind(this));
                 this.setState({
                     showData: true,
                     showVisualization: false,
                     currentEndpoint: ep.endpoint_name,
-                    data: '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>'
+                    data: pd.xml('<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>'),
+                    visualData: visualData
                 })
             }
         }).bind(this));
@@ -75,12 +86,20 @@ class ClientComponent extends Component {
     showGraph(endPoint){
         this.state.endPoints.map((function(ep){
             if(ep.endpoint_id === endPoint){
+                var visualData = '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>';
                 this.setState({
                     showData: false,
                     showVisualization: true,
                     currentEndpoint: ep.endpoint_name,
-                    visualData: '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>'
-                })
+                    visualData: visualData
+                });
+                xml2js.parseString(visualData, (function(err, result){
+                    if(!err){
+                        Chart().createChart("svg", myTreeData);
+                    } else {
+
+                    }
+                }).bind(this));
             }
         }).bind(this));
     }
@@ -180,12 +199,54 @@ class ClientComponent extends Component {
                             this.state.showData &&
                             <div>
                                 <div className="right-panel-heading">Data for `{this.state.currentEndpoint}`</div>
+                                <form>
+                                    <FormGroup
+                                        controlId="formBasicText"
+                                    >
+                                        <br />
+                                        <FieldGroup
+                                            id="formControlsText"
+                                            type="text"
+                                            label="Enter Endpoint name"
+                                            placeholder="Endpoint name"
+                                            onChange={this.handleNameChange}
+                                            value={this.state.currentEndpoint}
+                                        />
+                                        <FormGroup controlId="formControlsTextarea">
+                                            <ControlLabel>Workflow Graph in XML format</ControlLabel>
+                                            <FormControl
+                                                componentClass="textarea"
+                                                placeholder="textarea"
+                                                rows="15"
+                                                onChange={this.handleXMLChange}
+                                                onBlur={this.validateXML.bind(this)}
+                                                value={this.state.data}
+                                            />
+                                        </FormGroup>
+                                        <FormGroup controlId="formControlsTextarea">
+                                            <ControlLabel>Endpoint Details in JSON format</ControlLabel>
+                                            <FormControl
+                                                componentClass="textarea"
+                                                placeholder="textarea"
+                                                rows="25"
+                                                onChange={this.handleJSONChange}
+                                                onBlur={this.validateJSON}
+                                                value={this.state.visualData}
+                                            />
+                                        </FormGroup>
+                                    </FormGroup>
+                                </form>
+                                <div style={{textAlign: "right"}}>
+                                    <Button bsStyle="primary" className="update-endpoint" disabled>Update</Button>
+                                    <p style={{fontSize: "10px"}}><i>*Update is currently disabled</i></p>
+                                </div>
                             </div>
                         }
                         {
                             this.state.showVisualization &&
                             <div>
                                 <div className="right-panel-heading">Visualization for `{this.state.currentEndpoint}`</div>
+                                <svg width="960" height="600"><g/></svg>
                             </div>
                         }
                         {
