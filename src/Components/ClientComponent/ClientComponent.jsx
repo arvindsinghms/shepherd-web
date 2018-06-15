@@ -159,9 +159,9 @@ class ClientComponent extends Component {
                                             <li key={obj.endpointName}>
                                                 <span className="end-point">{obj.endpointName}</span>
                                                 <ButtonGroup>
-                                                    <Button className="xsmall-btn" bsStyle="default" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointName)}>Data</Button>
-                                                    <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpointName)}>Visualise Graph</Button>
-                                                    <Button className="xsmall-btn execute" bsStyle="info" bsSize="small"><Link to={`/client/${clientName}/${obj.endpointId}`}>Executions</Link></Button>
+                                                    <Button className="xsmall-btn" bsStyle="basic" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointName)}>Data</Button>
+                                                    <Button className="xsmall-btn" bsStyle="info" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpointName)}>Visualise Graph</Button>
+                                                    <Button className="xsmall-btn execute" bsStyle="success" bsSize="small"><Link to={`/client/${clientName}/${obj.endpointId}`}>Executions</Link></Button>
                                                     <Button className="xsmall-btn delete" bsStyle="danger" bsSize="small" onClick={this.deleteEndpoint.bind(this, obj.endpointId)}>Delete</Button>
                                                 </ButtonGroup>
                                             </li>
@@ -214,7 +214,7 @@ class ClientComponent extends Component {
                                     </FormGroup>
                                 </form>
                                 <div style={{textAlign: "right"}}>
-                                    <Button bsStyle="primary" className="update-endpoint" disabled>Update</Button>
+                                    <Button bsStyle="info" className="update-endpoint" disabled>Update</Button>
                                     <p style={{fontSize: "10px"}}><i>*Update is currently disabled</i></p>
                                 </div>
                             </div>
@@ -263,7 +263,7 @@ class ClientComponent extends Component {
                                                 value={this.state.JSONValue}
                                             />
                                         </FormGroup>
-                                        <Button bsStyle="primary" className="add-client" onClick={() => this.addEndPoint(clientName)}>
+                                        <Button bsStyle="info" className="add-client" onClick={() => this.addEndPoint(clientName)}>
                                             Add Endpoint
                                         </Button>
                                     </FormGroup>
