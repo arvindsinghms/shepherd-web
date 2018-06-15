@@ -53,9 +53,9 @@ class ClientComponent extends Component {
         this.setState({ XMLValue: e.target.value });
     }
 
-    showData(endPoint){
+    showData(endpointName){
         this.state.endPoints.map((function(ep){
-            if(ep.endpoint_id === endPoint){
+            if(ep.endpointName === endpointName){
                 var visualData = '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>';
                 xml2js.parseString(myTreeData, (function(err, result){
                     if(!err){
@@ -67,7 +67,7 @@ class ClientComponent extends Component {
                 this.setState({
                     showData: true,
                     showVisualization: false,
-                    currentEndpoint: ep.endpoint_name,
+                    currentEndpoint: ep.endpointName,
                     data: pd.xml('<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>'),
                     visualData: visualData
                 })
@@ -75,14 +75,14 @@ class ClientComponent extends Component {
         }).bind(this));
     }
 
-    showGraph(endPoint){
+    showGraph(endpointName){
         this.state.endPoints.map((function(ep){
-            if(ep.endpoint_id === endPoint){
+            if(ep.endpointName === endpointName){
                 var visualData = '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>';
                 this.setState({
                     showData: false,
                     showVisualization: true,
-                    currentEndpoint: ep.endpoint_name,
+                    currentEndpoint: ep.endpointName,
                     visualData: visualData
                 });
                 xml2js.parseString(visualData, (function(err, result){
@@ -144,7 +144,10 @@ class ClientComponent extends Component {
     addEndPoint(clientName) {
         const cb = (data) => {
             this.setState({
-                endPoints: [...this.state.endpoint, data]
+                endPoints: [...this.state.endPoints, data],
+                nameValue: '',
+                XMLValue: '',
+                JSONValue: ''
             })
         };
 
@@ -171,11 +174,11 @@ class ClientComponent extends Component {
                                 <ul>
                                     {
                                         this.state.endPoints.map(obj => (
-                                            <li key={obj.endpointId}>
+                                            <li key={obj.endpointName}>
                                                 <span className="end-point">{obj.endpointName}</span>
                                                 <ButtonGroup>
-                                                    <Button className="xsmall-btn" bsStyle="default" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointId)}>Data</Button>
-                                                    <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpointId)}>Visualise Graph</Button>
+                                                    <Button className="xsmall-btn" bsStyle="default" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointName)}>Data</Button>
+                                                    <Button className="xsmall-btn" bsStyle="primary" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpointName)}>Visualise Graph</Button>
                                                     <Button className="xsmall-btn execute" bsStyle="info" bsSize="small"><Link to={`/client/${clientName}/${obj.endpointId}`}>Executions</Link></Button>
                                                     <Button className="xsmall-btn delete" bsStyle="danger" bsSize="small" onClick={this.deleteEndpoint.bind(this, obj.endpointId)}>Delete</Button>
                                                 </ButtonGroup>

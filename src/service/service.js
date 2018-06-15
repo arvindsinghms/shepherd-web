@@ -73,18 +73,18 @@ export const fetchEndPoints = (clientName, cb) => {
  * @param endpoint_detail
  * @returns {Promise<any>}
  */
-export const createEndPoint = (clientName, endPointName, graphDetails, nodeDetails, cb) => {
+export const createEndPoint = (clientName, endpointName, graphDetails, nodesDetails, cb) => {
     var xhttp = new XMLHttpRequest();
     const req = {
         clientName: clientName,
-        endpointName: endPointName,
+        endpointName: endpointName,
         graphDetails: graphDetails,
-        nodeDetails: nodeDetails
+        nodesDetails: nodesDetails
     }
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             const res = {
-                endPointName: endPointName,
+                endpointName: endpointName,
                 clientName: clientName
             };
             if(typeof cb === 'function')
