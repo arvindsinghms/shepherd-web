@@ -56,20 +56,12 @@ class ClientComponent extends Component {
     showData(endpointName){
         this.state.endPoints.map((function(ep){
             if(ep.endpointName === endpointName){
-                var visualData = '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>';
-                xml2js.parseString(myTreeData, (function(err, result){
-                    if(!err){
-                        visualData = pd.json(JSON.stringify(myTreeData));
-                    } else {
-
-                    }
-                }).bind(this));
                 this.setState({
                     showData: true,
                     showVisualization: false,
                     currentEndpoint: ep.endpointName,
-                    data: pd.xml('<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>'),
-                    visualData: visualData
+                    data: pd.xml(ep.daggraph),
+                    visualData: JSON.stringify({})
                 })
             }
         }).bind(this));
