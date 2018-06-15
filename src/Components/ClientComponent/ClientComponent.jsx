@@ -95,13 +95,18 @@ class ClientComponent extends Component {
                 });
                 xml2js.parseString(visualData, (function(err, result){
                     if(!err){
-                        Chart().createChart("svg", myTreeData);
+                        // Chart().createChart("svg", myTreeData);
                     } else {
 
                     }
                 }).bind(this));
             }
         }).bind(this));
+    }
+
+    componentDidUpdate(){
+        if(this.state.showVisualization)
+            Chart().createChart("svg", myTreeData);
     }
 
     deleteEndpoint(endPoint){

@@ -28,22 +28,21 @@ export default function Chart(){
         var svg = select("svg"),
             inner = svg.select("g");
 
+        // Set up zoom support
+        var zoomed = zoom().on("zoom", function() {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoomed);
         // Run the renderer. This is what draws the final graph.
-        new dagreD3.render()(inner, g);
 
-        // // Set up zoom support
-        // var zoomed = zoom().on("zoom", function() {
-        //     inner.attr("transform", event.transform);
-        // });
-        // svg.call(zoomed);
-        //
-        // // Center the graph
-        // var initialScale = 0.75;
-        // svg.call(zoomed.transform, zoomIdentity.translate((svg.attr("width") - g.graph().width * initialScale) / 2, 20).scale(initialScale));
-        //
-        // // Center the graph
-        // var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
-        // inner.attr("transform", "translate(" + xCenterOffset + ", 20)");
+        new dagreD3.render()(inner, g);
+        // Center the graph
+        var initialScale = 0.75;
+        svg.call(zoomed.transform, zoomIdentity.translate((svg.attr("width") - g.graph().width * initialScale) / 2, 20).scale(initialScale));
+
+        // Center the graph
+        var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+        inner.attr("transform", "translate(" + xCenterOffset + ", 20)");
     }
 
     return {
