@@ -7,7 +7,8 @@ import '../App.css';
 import xml2js from "xml2js";
 import { pd } from "pretty-data";
 import Chart from "../../service/chart";
-import myTreeData from '../../service/treedata.json';
+// import myTreeData from '../../service/treedata.json';
+import { getVisualizationJSON } from '../../service/service';
 
 function FieldGroup({ id, label, help, ...props }) {
     return (
@@ -68,29 +69,18 @@ class ClientComponent extends Component {
     }
 
     showGraph(endpointName){
-        this.state.endPoints.map((function(ep){
-            if(ep.endpointName === endpointName){
-                var visualData = '<root><content><p xml:space="preserve">This is <b>some</b> content.</p></content></root>';
-                this.setState({
-                    showData: false,
-                    showVisualization: true,
-                    currentEndpoint: ep.endpointName,
-                    visualData: visualData
-                });
-                xml2js.parseString(visualData, (function(err, result){
-                    if(!err){
-                        // Chart().createChart("svg", myTreeData);
-                    } else {
-
-                    }
-                }).bind(this));
-            }
+        getVisualizationJSON(this.props.match.params.clientName, endpointName, (function(res){
+            this.setState({
+                showData: false,
+                showVisualization: true,
+                graphData: res
+            });
         }).bind(this));
     }
 
     componentDidUpdate(){
         if(this.state.showVisualization)
-            Chart().createChart("svg", myTreeData);
+            Chart().createChart("svg", this.state.graphData);
     }
 
     deleteEndpoint(endPoint){
