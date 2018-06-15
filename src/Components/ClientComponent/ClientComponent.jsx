@@ -60,8 +60,8 @@ class ClientComponent extends Component {
                     showData: true,
                     showVisualization: false,
                     currentEndpoint: ep.endpointName,
-                    data: pd.xml(ep.daggraph),
-                    visualData: JSON.stringify({})
+                    daggraph: pd.xml(ep.daggraph),
+                    endpointDetails: ep.endpointDetails
                 })
             }
         }).bind(this));
@@ -207,7 +207,7 @@ class ClientComponent extends Component {
                                                 rows="15"
                                                 onChange={this.handleXMLChange}
                                                 onBlur={this.validateXML.bind(this)}
-                                                value={this.state.data}
+                                                value={this.state.daggraph}
                                             />
                                         </FormGroup>
                                         <FormGroup controlId="formControlsTextarea">
@@ -218,7 +218,7 @@ class ClientComponent extends Component {
                                                 rows="25"
                                                 onChange={this.handleJSONChange}
                                                 onBlur={this.validateJSON}
-                                                value={this.state.visualData}
+                                                value={this.state.endpointDetails}
                                             />
                                         </FormGroup>
                                     </FormGroup>
