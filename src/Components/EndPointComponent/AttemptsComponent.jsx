@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
 class AttemptsComponent extends Component {
-    constructor(props) {
-        super(props);
-    }
+
     clickHandler(obj) {
         const { renderChart } = this.props;
         renderChart(obj);

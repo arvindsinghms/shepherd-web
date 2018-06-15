@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { clientsAPI, endPointsAPI } from '../../mockData';
+import { endPointsAPI } from '../../mockData';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Grid, Row, Col, FormGroup, ControlLabel, FormControl, Button, ButtonGroup } from 'react-bootstrap';
 import '../App.css';
 import xml2js from "xml2js";
 import { pd } from "pretty-data";
 import Chart from "../../service/chart";
-// import myTreeData from '../../service/treedata.json';
 import { getVisualizationJSON } from '../../service/service';
 
 function FieldGroup({ id, label, help, ...props }) {
@@ -25,7 +24,6 @@ class ClientComponent extends Component {
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleXMLChange = this.handleXMLChange.bind(this);
         this.handleJSONChange = this.handleJSONChange.bind(this);
-        //this.addEndPoint = this.addEndPoint.bind(this);
         this.state = {
             nameValue: '',
             XMLValue: '',

@@ -1,7 +1,6 @@
 // IMPORT DATA FROM STATIC JSON FILE
 
 // COMPONENT
-const simulateError = false;
 const registerClientUrl = "http://ec2-54-173-37-0.compute-1.amazonaws.com:8080/shephard-core/register/client";
 const fetchClientsUrl = "http://ec2-54-173-37-0.compute-1.amazonaws.com:8080/shephard-core/retrieve/client";
 const fetchEndpointsUrl = "http://ec2-54-173-37-0.compute-1.amazonaws.com:8080/shephard-core/retrieve/endpoints";
@@ -14,7 +13,7 @@ const getGraphJSON = "http://ec2-54-173-37-0.compute-1.amazonaws.com:8080/shepha
 export const fetchClients = (cb) => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
             const res = JSON.parse(xhttp.responseText);
             if(typeof cb === 'function')
                 cb(res.message);
@@ -34,7 +33,7 @@ export const fetchClients = (cb) => {
 export const addClient = (clientName, cb) => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
             const res = {
                 clientName: clientName,
                 clientId: JSON.parse(xhttp.responseText).clientId
@@ -56,7 +55,7 @@ export const addClient = (clientName, cb) => {
 export const fetchEndPoints = (clientName, cb) => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
             const res = JSON.parse(xhttp.responseText);
             if(typeof cb === 'function')
                 cb(res.message);
@@ -83,7 +82,7 @@ export const createEndPoint = (clientName, endpointName, graphDetails, nodesDeta
         nodesDetails: nodesDetails
     }
     xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
             const res = {
                 endpointName: endpointName,
                 clientName: clientName
@@ -120,7 +119,7 @@ export const executeWorkflow = (client_name, endpoint_name, payload) => {
 export const getVisualizationJSON = (client_name, endpoint_name, cb) => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
             const res = JSON.parse(xhttp.responseText);
             if(typeof cb === 'function')
                 cb(res.message);
