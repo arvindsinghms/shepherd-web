@@ -6,10 +6,9 @@ export default function Chart(){
         data.forEach((function(node){
             var nodeProps = {};
             graph.setNode(node.name, nodeProps);
-            if(node.children && node.children.length){
-                graph = addNodes(graph, node.children);
-                node.children.forEach(function(child){
-                    graph.setEdge(node.name, child.name, {label: child.name});
+            if(node.connections && node.connections.length){
+                node.connections.forEach(function(connection){
+                    graph.setEdge(node.name, connection.nodeName, {label: connection.edgeName});
                 });
             }
         }).bind(this));

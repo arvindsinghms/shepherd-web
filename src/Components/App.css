@@ -46,7 +46,7 @@
     line-height: 50px;
     padding: 0 30px;
     cursor: pointer;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #fff;
 }
 
 .left-panel-heading, .right-panel-heading {
@@ -62,12 +62,12 @@
 }
 
 .left-panel li:hover {
-    background: #eee;
+    background: #555;
 }
 
 .left-panel a,
 .left-panel a:hover{
-    color: grey;
+    color: #fff;
     text-decoration: none;
 }
 
@@ -78,6 +78,7 @@
 
 .left-panel ul {
     padding: 0;
+    margin-bottom: 0;
 }
 
 .right-panel{
@@ -92,7 +93,8 @@
 
 .end-point{
     margin-right: 10px;
-    color: #444;
+    color: #fff;
+    display: block;
 }
 
 .xsmall-btn {
@@ -128,7 +130,7 @@ li:last-child{
 
 li.execution-name, li.execution-name:hover{
     background: #ccc;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: #999;
     cursor: initial;
     padding: 0 15px;
 }
@@ -144,7 +146,7 @@ li.execution-name, li.execution-name:hover{
 
 
 .page-header{
-    background: #000;
+    background: #fff;
 }
 
 .page-header h1{
@@ -155,9 +157,11 @@ li.execution-name, li.execution-name:hover{
 .page-header h1 a:hover{
     display: block;
     padding: 10px 15px;
-    color: #fff;
+    color: #000;
     font-size: 0.75em;
     text-decoration: none;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
 }
 
 .execution-actions{
@@ -182,14 +186,15 @@ a.back, a.back:hover {
 }
 
 footer{
-    color: #fff;
-    background: #000;
+    color: #000;
+    background: #fff;
     font-size: 0.75rem;
     text-align: center;
     position: fixed;
     bottom: 0;
     width: 100%;
     padding: 7px 0;
+    border-bottom: 1px solid #000;
 }
 
 .no-history {
@@ -240,4 +245,8 @@ footer{
 
 .item-content {
     width: 20% !important;
+}
+
+.container-fluid{
+    border-bottom: 1px solid #fff;
 }
