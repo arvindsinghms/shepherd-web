@@ -17,7 +17,7 @@ import attempt13 from './service/attempt13.json';
 import attempt14 from './service/attempt14.json';
 import attempt15 from './service/attempt15.json';
 import attempt16 from './service/attempt16.json';
-import { setToLocalstorage, fetchFromLocalstorage } from './utils/util';
+import { fetchFromLocalstorage } from './utils/util';
 import { addClient, fetchClients, fetchEndPoints, createEndPoint } from './service/service';
 
 export const clientsAPI = {
