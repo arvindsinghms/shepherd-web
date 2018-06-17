@@ -45,7 +45,10 @@ class ClientComponent extends Component {
         endPointsAPI.get(clientName, (data => {
             this.setState({
                 endPoints: data,
-                isLoading: false
+                isLoading: false,
+                nameValue: '',
+                XMLValue: '',
+                JSONValue: ''
             })
         }));
     }
@@ -128,6 +131,9 @@ class ClientComponent extends Component {
     }
 
     addEndPoint(clientName) {
+        this.setState({
+            isLoading: true
+        });
         const cb = this.getEndpoints.bind(this);
 
         if(this.state.nameValue.trim() !== '' && this.state.XMLValue.trim() !== '' && this.state.JSONValue.trim() !== '')
@@ -159,7 +165,7 @@ class ClientComponent extends Component {
                                             <li key={obj.endpointName}>
                                                 <span className="end-point">{obj.endpointName}</span>
                                                 <ButtonGroup>
-                                                    <Button className="xsmall-btn" bsStyle="basic" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointName)}>Data</Button>
+                                                    <Button className="xsmall-btn" bsSize="xsmall" onClick={this.showData.bind(this, obj.endpointName)}>Data</Button>
                                                     <Button className="xsmall-btn" bsStyle="info" bsSize="xsmall" onClick={this.showGraph.bind(this, obj.endpointName)}>Visualise Graph</Button>
                                                     <Button className="xsmall-btn execute" bsStyle="success" bsSize="small"><Link to={`/client/${clientName}/${obj.endpointId}`}>Executions</Link></Button>
                                                     <Button className="xsmall-btn delete" bsStyle="danger" bsSize="small" onClick={this.deleteEndpoint.bind(this, obj.endpointId)}>Delete</Button>

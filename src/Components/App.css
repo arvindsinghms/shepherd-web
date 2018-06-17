@@ -250,6 +250,7 @@ footer{
 
 .container-fluid{
     border-bottom: 1px solid #fff;
+    padding-bottom: 5px;
 }
 
 .loading-panel {

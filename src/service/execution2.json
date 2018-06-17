@@ -1,7 +1,7 @@
 {
   "object_id": "1",
-  "execution_id": "2",
-  "endpoint_id": "3",
+  "executionId": "2",
+  "endpointId": "3",
   "status": "processing",
   "error_message": "no error",
   "processed_nodes": [1, 2, 3, 4],

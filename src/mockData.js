@@ -1,5 +1,5 @@
 import clientsData from './service/clients.json';
-import endPoints from './service/endPoints.json';
+import endpoints from './service/endPoints.json';
 import executions from './service/executions.json';
 import attempt1 from './service/attempt1.json';
 import attempt2 from './service/attempt2.json';
@@ -17,69 +17,44 @@ import attempt13 from './service/attempt13.json';
 import attempt14 from './service/attempt14.json';
 import attempt15 from './service/attempt15.json';
 import attempt16 from './service/attempt16.json';
-import { fetchFromLocalstorage } from './utils/util';
+import { fetchFromLocalstorage, setToLocalstorage } from './utils/util';
 import { addClient, fetchClients, fetchEndPoints, createEndPoint } from './service/service';
 
 export const clientsAPI = {
     clients: fetchFromLocalstorage('clients') || clientsData,
     all: function(cb) {
-        //return this.clients
         fetchClients(cb);
     },
     get: function (id) {
-        const isClient = client => client.client_id === id;
+        const isClient = client => client.clientId === id;
         return this.clients.find(isClient);
     },
     add: function(clientName, cb) {
         addClient(clientName, cb);
-        // this.clients.push(client);
-        // setToLocalstorage('clients', this.clients);
-        // return new Promise((resolve, reject) => {
-        //     resolve({});
-        // });
     }
 };
 
 export const endPointsAPI = {
-    endPoints: fetchFromLocalstorage('endpoints') || endPoints,
+    endpoints: fetchFromLocalstorage('endpoints') || endpoints,
     all: function() { return this.endPoints },
     get: function (clientName, cb) {
-        //const isEndPoint = endPoint => endPoint.client_id === clientId;
+        //const isEndPoint = endPoint => endPoint.clientId === clientId;
         //return this.endPoints.filter(isEndPoint);
         fetchEndPoints(clientName, cb);
     },
     add: function(clientName, endpointName, xmlData, jsonData, cb) {
         // this.endPoints.push(endpoint);
         // setToLocalstorage('endpoints', this.endPoints);
-        // return new Promise((resolve, reject) => {
-        //     resolve({});
-        // });
         createEndPoint(clientName, endpointName, xmlData, jsonData, cb);
     },
-    getEndPointById: function(endPointId) {
-        const isEndPoint = endPoint => endPoint.endpoint_id === endPointId;
-        return this.endPoints.find(isEndPoint);
-    }
-};
-
-export const executionAPI = {
-    executions: fetchFromLocalstorage('executions') || executions,
-    all: function() { return this.executions },
-    get: function (endpointName) {
-        const isExecution = execution => execution.endpointName === endpointName;
-        return this.executions.filter(isExecution);
-    },
-    add: function(execution) {
-        debugger;
-        this.executions.push(execution);
-        setToLocalstorage('executions', this.executions);
-
-        // create default attempt
+    getEndPointById: function(endpointId) {
+        const isEndpoint = endpoint => endpoint.endpointId === endpointId;
+        return this.endpoints.find(isEndpoint);
     }
 };
 
 export const attemptsAPI = {
-    attempts: [
+    attempts: fetchFromLocalstorage('attempts') || [
         {...attempt1},
         {...attempt2},
         {...attempt3},
@@ -99,8 +74,28 @@ export const attemptsAPI = {
     ],
     all: function() { return this.attempts },
     get: function (id) {
-        const isAttempt = execution => execution.execution_id === id;
+        const isAttempt = attempt => attempt.executionId === id;
         return this.attempts.find(isAttempt);
+    },
+    add: function(attempt) {
+        this.attempts.push(attempt);
+        setToLocalstorage('attempts', this.attempts);
+    }
+};
+
+export const executionAPI = {
+    executions: fetchFromLocalstorage('executions') || executions,
+    all: function() { return this.executions },
+    get: function (endpointName) {
+        const isExecution = execution => execution.endpointName === endpointName;
+        return this.executions.filter(isExecution);
+    },
+    add: function(execution) {
+        this.executions.push(execution);
+        setToLocalstorage('executions', this.executions);
+
+        // create default attempt
 
     }
 };
+

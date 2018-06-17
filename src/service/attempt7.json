@@ -1,6 +1,6 @@
 {
-  "execution_id": "221",
-  "attempt_id": "1111",
+  "executionId": "221",
+  "attemptId": "1111",
   "attempts": [{
     "name": "first step",
     "attributes": {

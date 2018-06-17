@@ -6,15 +6,55 @@ import AttemptsComponent from './AttemptsComponent';
 import './tree.css';
 import Chart from '../../service/chart';
 import myTreeData from '../../service/treedata.json';
+import { guid } from '../../utils/util';
+//import { dummyAttempt } from '../../service/dummyAttempt.json';
 
 function createExecution(endpointName, executionName) {
     let obj = {};
     obj.executionName = executionName;
     obj.endpointName = endpointName;
+    obj.executionId = guid();
     return obj;
 }
 
+const dummyAttempt = {
+    "executionId": "412",
+    "attemptId": "1111",
+    "attempts": [{
+        "name": "Trigger delete from CX page",
+        "attributes": {
+            "keyA": "val A",
+            "keyB": "val B",
+            "keyC": "val C"
+        },
+        "nodeSvgShape": {
+            "shape": "circle",
+            "shapeProps": {
+                "r": 10,
+                "fill": "green"
+            }
+        },
+        "children": [{
+            "name": "Trigger delete from visits page",
+            "attributes": {
+                "keyA": "val A",
+                "keyB": "val B",
+                "keyC": "val C"
+            },
+            "nodeSvgShape": {
+                "shape": "circle",
+                "shapeProps": {
+                    "r": 10,
+                    "fill": "green"
+                }
+            }
+        }
+        ]
+    }]
+};
+
 class EndPointComponent extends Component {
+
     constructor() {
         super();
         this.renderChart = this.renderChart.bind(this);
@@ -26,7 +66,9 @@ class EndPointComponent extends Component {
             payLoad: {},
             payloadCounter: 1,
             isLoading: false,
-            executionFieldValue: ''
+            executionFieldValue: '',
+            executions: [],
+            attemptsMap: {}
         };
     }
 
@@ -56,6 +98,35 @@ class EndPointComponent extends Component {
         var execution = createExecution(endpointName, this.state.executionFieldValue);
 
         executionAPI.add(execution);
+
+        let attempt = {...dummyAttempt};
+        attempt.executionId = execution.executionId;
+        attempt.attemptId = guid();
+        attemptsAPI.add(attempt);
+
+        this.updateExecutionAttemptMap();
+    }
+
+    updateExecutionAttemptMap() {
+        const endpointName = this.props.match.params.endpointName;
+        const execs = executionAPI.get(endpointName);
+        const atts = {};
+
+        execs.map((obj) => {
+            let att = attemptsAPI.get(obj.executionId);
+            atts[obj.executionId] = att;
+        });
+
+        console.log(atts);
+        this.setState({
+            executions: execs,
+            attemptsMap: atts,
+            executionFieldValue: ''
+        });
+    }
+
+    componentDidMount() {
+        this.updateExecutionAttemptMap();
     }
 
     componentDidUpdate() {
@@ -87,12 +158,7 @@ class EndPointComponent extends Component {
     render() {
         const endpointName = this.props.match.params.endpointName;
         const clientName = this.props.match.params.clientName;
-        // const endpoint = executionAPI.get(endPointId);
-        // if (!endpoint) {
-        //     return <div>Sorry! but the endpoint was not found</div>
-        // }
-        //const client = endPointsAPI.getEndPointById(endPointId);
-        const executions = executionAPI.get(endpointName);
+
         return (
             <Grid fluid={true}>
                 <Row className="show-grid">
@@ -104,12 +170,12 @@ class EndPointComponent extends Component {
                                 <span title="Add Execution" className="add-element" onClick={() => this.setMode('execute_workflow')}>+</span>
                             </div>
                             <div>
-                                { !executions.length && <div className="no-history">No Execution history found</div> }
-                                { executions.length > 0 &&
-                                    executions.map(obj => (
-                                        <ul key={obj.execution_id} onClick={this.renderChart} className="executions">
-                                            <li className="execution-name">{obj.name}</li>
-                                            <li className="no-hover-effect attempts"><AttemptsComponent renderChart={this.renderChart} attempts={attemptsAPI.get(obj.executionName).attempts}/></li>
+                                { !this.state.executions.length && <div className="no-history">No Execution history found</div> }
+                                { this.state.executions.length > 0 &&
+                                    this.state.executions.map(obj => (
+                                        <ul key={obj.executionId} onClick={this.renderChart} className="executions">
+                                            <li className="execution-name">{obj.executionName}</li>
+                                            <li className="no-hover-effect attempts"><AttemptsComponent renderChart={this.renderChart} attemptObj={this.state.attemptsMap[obj.executionId]}/></li>
                                         </ul>
                                     ))
                                 }
@@ -137,7 +203,7 @@ class EndPointComponent extends Component {
                         </div>
                     }
                     {
-                        executions.length > 0 &&
+                        this.state.executions.length > 0 &&
                         this.state.mode === 'render_chart' &&
                         <div>
                             <ButtonGroup vertical={true} className="execution-actions">

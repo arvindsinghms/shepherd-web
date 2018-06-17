@@ -7,7 +7,11 @@ class AttemptsComponent extends Component {
         renderChart(obj);
     }
     render() {
-        const attempts = this.props.attempts;
+        const attempts = this.props.attemptObj.attempts || [];
+        if(attempts.length <= 0) {
+            return <div>No attempt has been performed yet</div>
+        }
+
         return (
             <ul>
                 {

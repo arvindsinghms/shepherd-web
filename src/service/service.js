@@ -69,8 +69,8 @@ export const fetchEndPoints = (clientName, cb) => {
 
 /**
  * create endpoint
- * @param workflow_graph
- * @param endpoint_detail
+ * @param graphDetails
+ * @param nodesDetails
  * @returns {Promise<any>}
  */
 export const createEndPoint = (clientName, endpointName, graphDetails, nodesDetails, cb) => {
@@ -97,11 +97,11 @@ export const createEndPoint = (clientName, endpointName, graphDetails, nodesDeta
 };
 
 /**
- * fetch all the execution for the endpoint_id
- * @param endpoint_id
+ * fetch all the execution for the endpointId
+ * @param endpointId
  * @returns {Promise<any>}
  */
-export const fetchExecutions = (endpoint_id) => {
+export const fetchExecutions = (endpointId) => {
 
 };
 
@@ -112,11 +112,11 @@ export const fetchExecutions = (endpoint_id) => {
  * @param payload
  * @returns {Promise<any>}
  */
-export const executeWorkflow = (client_name, endpoint_name, payload) => {
+export const executeWorkflow = (clientName, endpointName, payload) => {
 
 };
 
-export const getVisualizationJSON = (client_name, endpoint_name, cb) => {
+export const getVisualizationJSON = (clientName, endpointName, cb) => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
@@ -126,7 +126,7 @@ export const getVisualizationJSON = (client_name, endpoint_name, cb) => {
         }
     };
 
-    const url = getGraphJSON + "?clientName=" + client_name + "&endpointName=" + endpoint_name;
+    const url = getGraphJSON + "?clientName=" + clientName + "&endpointName=" + endpointName;
     xhttp.open("GET", url, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();

@@ -1,7 +1,7 @@
 {
-  "execution_id": "122",
-  "attempt_id": "1111",
-  "attempt_name": "attempt4",
+  "executionId": "122",
+  "attemptId": "1111",
+  "attemptName": "attempt4",
   "attempts": [{
     "name": "first step",
     "attributes": {

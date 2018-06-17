@@ -1,6 +1,6 @@
 {
-  "execution_id": "121",
-  "attempt_id": "1111",
+  "executionId": "121",
+  "attemptId": "1111",
   "attempts": [{
     "name": "Trigger delete from CX page",
     "attributes": {
