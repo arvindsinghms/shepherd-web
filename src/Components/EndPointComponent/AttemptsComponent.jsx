@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 class AttemptsComponent extends Component {
 
-    clickHandler(obj) {
+    clickHandler(obj, executionId) {
         const { renderChart } = this.props;
-        renderChart(obj);
+        renderChart(obj, executionId);
     }
     render() {
-        const attempts = this.props.attemptObj.attempts || [];
+        const attempts = this.props.attemptObj || [];
         if(attempts.length <= 0) {
             return <div>No attempt has been performed yet</div>
         }
@@ -16,7 +16,7 @@ class AttemptsComponent extends Component {
             <ul>
                 {
                     attempts.map((obj, ind) => (
-                        <li key={ind} className="attempt" onClick={() => this.clickHandler(obj)}>
+                        <li key={ind} className="attempt" onClick={() => this.clickHandler(obj.attempts[0], obj.executionId)}>
                             Attempt {ind+1}
                         </li>
                     ))

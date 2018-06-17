@@ -75,7 +75,7 @@ export const attemptsAPI = {
     all: function() { return this.attempts },
     get: function (id) {
         const isAttempt = attempt => attempt.executionId === id;
-        return this.attempts.find(isAttempt);
+        return this.attempts.filter(isAttempt);
     },
     add: function(attempt) {
         this.attempts.push(attempt);

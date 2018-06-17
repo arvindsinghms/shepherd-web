@@ -68,7 +68,8 @@ class EndPointComponent extends Component {
             isLoading: false,
             executionFieldValue: '',
             executions: [],
-            attemptsMap: {}
+            attemptsMap: {},
+            currentExecutionInstanceId: ''
         };
     }
 
@@ -82,15 +83,25 @@ class EndPointComponent extends Component {
         })
     }
 
-    renderChart(chart) {
+    renderChart(chart, executionId) {
         let arr = [];
         if(!chart.hasOwnProperty("name"))
             return;
         arr.push(chart);
         this.setState({
             mode: 'render_chart',
-            currentChart: arr
+            currentChart: arr,
+            currentExecutionInstanceId: executionId
         });
+    }
+
+    restartExecution() {
+        let attempt = {...dummyAttempt};
+        attempt.executionId = this.state.currentExecutionInstanceId;
+        attempt.attemptId = guid();
+        attemptsAPI.add(attempt);
+
+        this.updateExecutionAttemptMap();
     }
 
     executeEndPoint() {
@@ -110,17 +121,16 @@ class EndPointComponent extends Component {
     updateExecutionAttemptMap() {
         const endpointName = this.props.match.params.endpointName;
         const execs = executionAPI.get(endpointName);
-        const atts = {};
+        const attempts = {};
 
         execs.map((obj) => {
-            let att = attemptsAPI.get(obj.executionId);
-            atts[obj.executionId] = att;
+            let attempt = attemptsAPI.get(obj.executionId);
+            attempts[obj.executionId] = attempt;
         });
 
-        console.log(atts);
         this.setState({
             executions: execs,
-            attemptsMap: atts,
+            attemptsMap: attempts,
             executionFieldValue: ''
         });
     }
@@ -173,7 +183,7 @@ class EndPointComponent extends Component {
                                 { !this.state.executions.length && <div className="no-history">No Execution history found</div> }
                                 { this.state.executions.length > 0 &&
                                     this.state.executions.map(obj => (
-                                        <ul key={obj.executionId} onClick={this.renderChart} className="executions">
+                                        <ul key={obj.executionId} className="executions">
                                             <li className="execution-name">{obj.executionName}</li>
                                             <li className="no-hover-effect attempts"><AttemptsComponent renderChart={this.renderChart} attemptObj={this.state.attemptsMap[obj.executionId]}/></li>
                                         </ul>
@@ -208,7 +218,7 @@ class EndPointComponent extends Component {
                         <div>
                             <ButtonGroup vertical={true} className="execution-actions">
                                 <Button bsStyle="success" bsSize="small">Resume</Button>
-                                <Button bsStyle="primary" bsSize="small">Restart</Button>
+                                <Button bsStyle="primary" bsSize="small" onClick={() => {this.restartExecution()}}>Restart</Button>
                                 <Button bsStyle="danger" bsSize="small" >Kill</Button>
                             </ButtonGroup>
                             <div>
