@@ -7,6 +7,7 @@ import './tree.css';
 import Chart from '../../service/chart';
 import myTreeData from '../../service/treedata.json';
 import { guid } from '../../utils/util';
+import {getVisualizationJSON} from "../../service/service";
 //import { dummyAttempt } from '../../service/dummyAttempt.json';
 
 function createExecution(endpointName, executionName) {
@@ -60,6 +61,7 @@ class EndPointComponent extends Component {
         this.renderChart = this.renderChart.bind(this);
         this.createFormRows = this.createFormRows.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.showGraph = this.showGraph.bind(this);
         this.state = {
             currentChart: myTreeData,
             mode: 'execute_workflow',
@@ -83,20 +85,23 @@ class EndPointComponent extends Component {
         })
     }
 
-    renderChart(chart, executionId) {
-        let arr = [];
-        if(!chart.hasOwnProperty("name"))
-            return;
-        arr.push(chart);
-        this.setState({
-            mode: 'render_chart',
-            currentChart: arr,
-            currentExecutionInstanceId: executionId
-        });
+    renderChart(executionId) {
+        const endpointName = this.props.match.params.endpointName;
+        this.showGraph(endpointName, executionId);
+    }
+
+    showGraph(endpointName, executionId){
+        getVisualizationJSON(this.props.match.params.clientName, endpointName, (function(res){
+            this.setState({
+                mode: 'render_chart',
+                currentChart: res,
+                currentExecutionInstanceId: executionId
+            });
+        }).bind(this));
     }
 
     restartExecution() {
-        let attempt = {...dummyAttempt};
+        let attempt = {...myTreeData};
         attempt.executionId = this.state.currentExecutionInstanceId;
         attempt.attemptId = guid();
         attemptsAPI.add(attempt);
@@ -110,7 +115,7 @@ class EndPointComponent extends Component {
 
         executionAPI.add(execution);
 
-        let attempt = {...dummyAttempt};
+        let attempt = {...myTreeData};
         attempt.executionId = execution.executionId;
         attempt.attemptId = guid();
         attemptsAPI.add(attempt);
