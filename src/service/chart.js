@@ -22,7 +22,8 @@ export default function Chart(){
     }
 
     function createChart(svgSelector, treeData){
-        var g = getTreeData(require('./treedata.json'));
+        //var g = getTreeData(require('./treedata.json'));
+        var g = getTreeData(treeData);
 
         var svg = select("svg"),
             inner = svg.select("g");

@@ -266,38 +266,86 @@ footer{
     animation: shrink 1s infinite alternate;
 }
 
-@-webkit-keyframes shrink {
+.loading-panel::after {
+    content: "Loading...";
+    position: relative;
+    top: 28%;
+    left: 45.5%;
+    font-size: 2em;
+    -webkit-animation: opacityAnim 1s infinite alternate;
+    -moz-animation: opacityAnim 1s infinite alternate;
+    -o-animation: opacityAnim 1s infinite alternate;
+    animation: opacityAnim 1s infinite alternate;
+}
+
+@-webkit-keyframes opacityAnim {
     0% {
-        background-size: 5% auto;
+        opacity: 0.2;
     }
     100% {
-        background-size: 10% auto;
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes opacityAnim {
+    0% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes opacityAnim {
+    0% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes opacityAnim {
+    0% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes shrink {
+    0% {
+        background-size: 2% auto;
+    }
+    100% {
+        background-size: 5% auto;
     }
 }
 
 @-moz-keyframes shrink {
     0% {
-        background-size: 5% auto;
+        background-size: 2% auto;
     }
     100% {
-        background-size: 10% auto;
+        background-size: 5% auto;
     }
 }
 
 @-o-keyframes shrink {
     0% {
-        background-size: 5% auto;
+        background-size: 2% auto;
     }
     100% {
-        background-size: 10% auto;
+        background-size: 5% auto;
     }
 }
 
 @keyframes shrink {
     0% {
-        background-size: 5% auto;
+        background-size: 2% auto;
     }
     100% {
-        background-size: 10% auto;
+        background-size: 5% auto;
     }
 }
