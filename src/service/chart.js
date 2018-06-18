@@ -4,7 +4,9 @@ import {event, select, zoom, zoomIdentity} from "d3";
 export default function Chart(){
     function addNodes(graph, data){
         data.forEach(function(node){
-            var nodeProps = {};
+            var nodeProps = {
+                class: node.class
+            };
             graph.setNode(node.name, nodeProps);
             if(node.connections && node.connections.length){
                 node.connections.forEach(function(connection){

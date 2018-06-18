@@ -10,6 +10,11 @@ import { guid } from '../../utils/util';
 import {getVisualizationJSON} from "../../service/service";
 //import { dummyAttempt } from '../../service/dummyAttempt.json';
 
+
+import delete_first_user_data_attempt1 from '../../service/delete_first_user_data_attempt1.json';
+import delete_first_user_data_attempt2 from '../../service/delete_first_user_data_attempt2.json';
+
+
 function createExecution(endpointName, executionName) {
     let obj = {};
     obj.executionName = executionName;
@@ -53,6 +58,10 @@ const dummyAttempt = {
         ]
     }]
 };
+
+function setXMLData(endpointName, executionName, attemptName) {
+
+}
 
 class EndPointComponent extends Component {
 
@@ -101,7 +110,7 @@ class EndPointComponent extends Component {
     }
 
     restartExecution() {
-        let attempt = {...myTreeData};
+        let attempt = {...delete_first_user_data_attempt1};
         attempt.executionId = this.state.currentExecutionInstanceId;
         attempt.attemptId = guid();
         attemptsAPI.add(attempt);
@@ -115,7 +124,7 @@ class EndPointComponent extends Component {
 
         executionAPI.add(execution);
 
-        let attempt = {...myTreeData};
+        let attempt = {...delete_first_user_data_attempt1};
         attempt.executionId = execution.executionId;
         attempt.attemptId = guid();
         attemptsAPI.add(attempt);
@@ -146,7 +155,7 @@ class EndPointComponent extends Component {
 
     componentDidUpdate() {
         if(this.state.mode === 'render_chart')
-            Chart().createChart("svg", myTreeData);
+            Chart().createChart("svg", delete_first_user_data_attempt1);
     }
 
     createFormRows = () => {

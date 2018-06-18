@@ -12,3 +12,19 @@
     fill: none;
     stroke-width: 1.5px;
 }
+
+g.type-OK > rect {
+    fill: green !important;
+}
+
+g.type-pending > rect {
+    fill: grey !important;
+}
+
+g.type-error > rect {
+    fill: red !important;
+}
+
+g.type-inprogress > rect {
+    fill: yellow !important;
+}

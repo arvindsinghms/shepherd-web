@@ -1,0 +1,75 @@
+[
+  {
+    "name":"FetchDataFromAllIqs",
+    "connections":[
+      {
+        "edgeName":"Generated",
+        "nodeName":"IsRequestType"
+      }
+    ],
+    "hostname":"RMS"
+  },
+  {
+    "name":"IsRequestType",
+    "connections":[
+      {
+        "edgeName":"Xero",
+        "nodeName":"Xero"
+      },
+      {
+        "edgeName":"Concur",
+        "nodeName":"Concur"
+      },
+      {
+        "edgeName":"Freshbooks",
+        "nodeName":"Freshbooks"
+      }
+    ],
+    "hostname":"RMS"
+  },
+  {
+    "name":"Xero",
+    "connections":[
+      {
+        "edgeName":"Uploaded",
+        "nodeName":"InformClient"
+      }
+    ],
+    "hostname":"RMS"
+  },
+  {
+    "name":"Concur",
+    "connections":[
+      {
+        "edgeName":"Uploaded",
+        "nodeName":"InformClient"
+      }
+    ],
+    "hostname":"RMS"
+  },
+  {
+    "name":"Freshbooks",
+    "connections":[
+      {
+        "edgeName":"Uploaded",
+        "nodeName":"InformClient"
+      }
+    ],
+    "hostname":"RMS"
+  },
+  {
+    "name":"InformClient",
+    "connections": [
+      {
+        "edgeName": "Informed",
+        "nodeName": "UpdateInternalState"
+      }
+    ],
+    "hostname":"RMS"
+  },
+  {
+    "name":"UpdateInternalState",
+    "connections": null,
+    "hostname":"RMS"
+  }
+]
