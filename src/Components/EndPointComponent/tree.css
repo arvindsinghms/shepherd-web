@@ -26,5 +26,5 @@ g.type-error > rect {
 }
 
 g.type-inprogress > rect {
-    fill: yellow !important;
+    fill: #9d9df9 !important;
 }

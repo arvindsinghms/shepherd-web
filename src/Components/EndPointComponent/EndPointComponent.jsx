@@ -7,12 +7,13 @@ import './tree.css';
 import Chart from '../../service/chart';
 import myTreeData from '../../service/treedata.json';
 import { guid } from '../../utils/util';
-import {getVisualizationJSON} from "../../service/service";
-//import { dummyAttempt } from '../../service/dummyAttempt.json';
 
 
 import delete_first_user_data_attempt1 from '../../service/delete_first_user_data_attempt1.json';
-import delete_first_user_data_attempt2 from '../../service/delete_first_user_data_attempt2.json';
+import rms_execution1_attempt1 from '../../service/rms_execution1_attempt1.json';
+import delete_user_data_beta_default from '../../service/delete_user_data_beta_default.json';
+import delete_user_data_beta_pf1 from '../../service/delete_user_data_beta_pf1.json';
+import delete_user_data_beta_ip1 from '../../service/delete_user_data_beta_ip1.json';
 
 
 function createExecution(endpointName, executionName) {
@@ -23,51 +24,34 @@ function createExecution(endpointName, executionName) {
     return obj;
 }
 
-const dummyAttempt = {
-    "executionId": "412",
-    "attemptId": "1111",
-    "attempts": [{
-        "name": "Trigger delete from CX page",
-        "attributes": {
-            "keyA": "val A",
-            "keyB": "val B",
-            "keyC": "val C"
-        },
-        "nodeSvgShape": {
-            "shape": "circle",
-            "shapeProps": {
-                "r": 10,
-                "fill": "green"
-            }
-        },
-        "children": [{
-            "name": "Trigger delete from visits page",
-            "attributes": {
-                "keyA": "val A",
-                "keyB": "val B",
-                "keyC": "val C"
-            },
-            "nodeSvgShape": {
-                "shape": "circle",
-                "shapeProps": {
-                    "r": 10,
-                    "fill": "green"
-                }
-            }
-        }
-        ]
-    }]
-};
-
-function getCurrentChart(executionId, attemptId) {
+function getCurrentChart(executionId, attemptId, endpointName) {
+    console.log("executionId " + executionId);
+    console.log("attemptId " + attemptId);
     let chartdata = myTreeData; // default data to be shown
-    if(executionId === '06df-bc8d-1f56-dfd0') {
-        if(attemptId === '4a33-54f2-c218-facd') {
-            chartdata = delete_first_user_data_attempt1;
-        } else if(attemptId === '2ca4-911b-7b8d-ec62') {
-            chartdata = delete_first_user_data_attempt2;
+
+    if(endpointName === '46') {
+        chartdata = delete_user_data_beta_default;
+
+        if(executionId === 'cf6a-02e8-871d-394a') {
+            if(attemptId === 'd085-3d91-57f5-6984') {
+                chartdata = delete_user_data_beta_pf1;
+            } else if (attemptId === '4bf8-0f3f-2d5b-7ad0') {
+                chartdata = delete_user_data_beta_ip1;
+            }
         }
+
+        if(executionId === 'e320-a004-2ee5-7bb9') {
+            if (attemptId === '4bf8-0f3f-2d5b-7ad0') {
+                chartdata = delete_user_data_beta_ip1;
+            }
+        }
+
     }
+
+    if(endpointName === '44') {
+        chartdata = rms_execution1_attempt1;
+    }
+
     return chartdata;
 }
 
@@ -102,7 +86,8 @@ class EndPointComponent extends Component {
     }
 
     renderChart(executionId, attemptId) {
-        const currentChart = getCurrentChart(executionId, attemptId);
+        const endpointName = this.props.match.params.endpointName;
+        const currentChart = getCurrentChart(executionId, attemptId, endpointName);
 
         this.setState({
             mode: 'render_chart',

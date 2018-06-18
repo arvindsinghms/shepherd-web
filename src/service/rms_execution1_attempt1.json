@@ -7,7 +7,8 @@
         "nodeName":"IsRequestType"
       }
     ],
-    "hostname":"RMS"
+    "hostname":"RMS",
+    "class": "type-OK"
   },
   {
     "name":"IsRequestType",
@@ -25,7 +26,8 @@
         "nodeName":"Freshbooks"
       }
     ],
-    "hostname":"RMS"
+    "hostname":"RMS",
+    "class": "type-OK"
   },
   {
     "name":"Xero",
@@ -35,7 +37,8 @@
         "nodeName":"InformClient"
       }
     ],
-    "hostname":"RMS"
+    "hostname":"RMS",
+    "class": "type-OK"
   },
   {
     "name":"Concur",
@@ -45,7 +48,8 @@
         "nodeName":"InformClient"
       }
     ],
-    "hostname":"RMS"
+    "hostname":"RMS",
+    "class": "type-OK"
   },
   {
     "name":"Freshbooks",
@@ -55,7 +59,8 @@
         "nodeName":"InformClient"
       }
     ],
-    "hostname":"RMS"
+    "hostname":"RMS",
+    "class": "type-OK"
   },
   {
     "name":"InformClient",
@@ -65,11 +70,13 @@
         "nodeName": "UpdateInternalState"
       }
     ],
-    "hostname":"RMS"
+    "hostname":"RMS",
+    "class": "type-OK"
   },
   {
     "name":"UpdateInternalState",
     "connections": null,
-    "hostname":"RMS"
+    "hostname":"RMS",
+    "class": "type-OK"
   }
 ]
