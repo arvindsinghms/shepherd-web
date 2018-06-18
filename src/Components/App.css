@@ -279,7 +279,7 @@ footer{
 }
 
 body {
-    background: rgb(98, 98, 98) !important;
+    background: rgba(98, 98, 98, 0.8) !important;
 }
 
 @-webkit-keyframes opacityAnim {
