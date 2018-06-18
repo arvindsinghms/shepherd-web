@@ -278,6 +278,10 @@ footer{
     animation: opacityAnim 1s infinite alternate;
 }
 
+body {
+    background: rgb(98, 98, 98) !important;
+}
+
 @-webkit-keyframes opacityAnim {
     0% {
         opacity: 0.2;

@@ -30,7 +30,8 @@
         "nodeName":"DeleteAnalyticsData"
       }
     ],
-    "hostname":"MilesIq"
+    "hostname":"MilesIq",
+    "class": "type-OK"
   },
   {
     "name":"DeleteVisitsIqData",
@@ -44,7 +45,8 @@
         "nodeName":"DeleteAnalyticsData"
       }
     ],
-    "hostname":"VisitsIq"
+    "hostname":"VisitsIq",
+    "class": "type-OK"
   },
   {
     "name":"DeleteSpendIqData",
@@ -58,16 +60,19 @@
         "nodeName":"DeleteAnalyticsData"
       }
     ],
-    "hostname":"SpendIq"
+    "hostname":"SpendIq",
+    "class": "type-OK"
   },
   {
     "name":"DeleteReportsData",
     "connections": null,
-    "hostname":"RMS"
+    "hostname":"RMS",
+    "class": "type-OK"
   },
   {
     "name":"DeleteAnalyticsData",
     "connections": null,
-    "hostname":"Panda"
+    "hostname":"Panda",
+    "class": "type-OK"
   }
 ]

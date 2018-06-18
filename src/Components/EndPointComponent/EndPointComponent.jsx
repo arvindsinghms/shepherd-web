@@ -59,8 +59,16 @@ const dummyAttempt = {
     }]
 };
 
-function setXMLData(endpointName, executionName, attemptName) {
-
+function getCurrentChart(executionId, attemptId) {
+    let chartdata = myTreeData; // default data to be shown
+    if(executionId === '06df-bc8d-1f56-dfd0') {
+        if(attemptId === '4a33-54f2-c218-facd') {
+            chartdata = delete_first_user_data_attempt1;
+        } else if(attemptId === '2ca4-911b-7b8d-ec62') {
+            chartdata = delete_first_user_data_attempt2;
+        }
+    }
+    return chartdata;
 }
 
 class EndPointComponent extends Component {
@@ -70,7 +78,6 @@ class EndPointComponent extends Component {
         this.renderChart = this.renderChart.bind(this);
         this.createFormRows = this.createFormRows.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.showGraph = this.showGraph.bind(this);
         this.state = {
             currentChart: myTreeData,
             mode: 'execute_workflow',
@@ -94,19 +101,14 @@ class EndPointComponent extends Component {
         })
     }
 
-    renderChart(executionId) {
-        const endpointName = this.props.match.params.endpointName;
-        this.showGraph(endpointName, executionId);
-    }
+    renderChart(executionId, attemptId) {
+        const currentChart = getCurrentChart(executionId, attemptId);
 
-    showGraph(endpointName, executionId){
-        getVisualizationJSON(this.props.match.params.clientName, endpointName, (function(res){
-            this.setState({
-                mode: 'render_chart',
-                currentChart: res,
-                currentExecutionInstanceId: executionId
-            });
-        }).bind(this));
+        this.setState({
+            mode: 'render_chart',
+            currentChart: currentChart,
+            currentExecutionInstanceId: executionId
+        });
     }
 
     restartExecution() {
@@ -155,7 +157,7 @@ class EndPointComponent extends Component {
 
     componentDidUpdate() {
         if(this.state.mode === 'render_chart')
-            Chart().createChart("svg", delete_first_user_data_attempt1);
+            Chart().createChart("svg", this.state.currentChart);
     }
 
     createFormRows = () => {

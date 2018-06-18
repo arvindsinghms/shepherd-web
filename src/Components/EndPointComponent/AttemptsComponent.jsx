@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 class AttemptsComponent extends Component {
 
-    clickHandler(executionId) {
+    clickHandler(executionId, attemptId) {
         const { renderChart } = this.props;
-        renderChart(executionId);
+        renderChart(executionId, attemptId);
     }
     render() {
         const attempts = this.props.attemptObj || [];
@@ -16,7 +16,7 @@ class AttemptsComponent extends Component {
             <ul>
                 {
                     attempts.map((obj, ind) => (
-                        <li key={ind} className="attempt" onClick={() => this.clickHandler(obj.executionId)}>
+                        <li key={ind} className="attempt" onClick={() => this.clickHandler(obj.executionId, obj.attemptId)}>
                             Attempt {ind+1}
                         </li>
                     ))
